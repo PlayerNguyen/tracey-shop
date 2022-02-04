@@ -1,0 +1,9 @@
+{
+  "name": "tracey-web-application",
+  "version": "0.0.1",
+  "private": "true",
+  "scripts": {
+    "test:server": "cd server && yarn test",
+    "test": "yarn test:server"
+  }
+}

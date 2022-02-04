@@ -1,0 +1,28 @@
+{
+  "name": "tracey",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon -r dotenv/config . dotenv_config_path=env/.env",
+    "test": "env-cmd -f ./env/.test.env mocha --exit"
+  },
+  "dependencies": {
+    "async": "^3.2.3",
+    "bcryptjs": "^2.4.3",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "chalk": "4.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^9.2.0",
+    "mongoose": "^6.1.8",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
+  }
+}
