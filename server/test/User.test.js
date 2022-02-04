@@ -5,7 +5,7 @@ chai.use(chaiHttp);
 const app = require("../index");
 const mongoose = require("mongoose");
 const UserModel = require("../model/UserModel");
-const Token = require("../utils/Token");
+const validator = require("validator");
 
 const userSample = {
   username: "test",
@@ -91,7 +91,9 @@ describe("User", function () {
         .end((_err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.have.property("token");
-
+          // console.log(res.body);
+          expect(res.body.token).to.be.a("string");
+          expect(validator.isJWT(res.body.token)).to.be.true;
           done();
         });
     });

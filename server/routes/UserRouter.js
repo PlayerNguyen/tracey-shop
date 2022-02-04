@@ -80,7 +80,7 @@ router.post(
 
         // Compare password
         UserController.comparePassword(username, password)
-          .then((result) => {
+          .then(async (result) => {
             // Password not match
             if (!result) {
               return next(
@@ -89,7 +89,7 @@ router.post(
             }
 
             res.json({
-              token: Token.createToken(
+              token: await Token.createToken(
                 { username, _id: result._id },
                 process.env.USER_SESSION_EXPIRATION || "15m"
               ),

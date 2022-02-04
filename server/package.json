@@ -20,7 +20,8 @@
     "jsonwebtoken": "^8.5.1",
     "mocha": "^9.2.0",
     "mongoose": "^6.1.8",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0"
