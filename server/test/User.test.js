@@ -167,4 +167,42 @@ describe("User", function () {
         });
     });
   });
+
+  describe(`User update`, () => {
+    before((done) => {
+      chai.request(app).post("/users/new").send(userSample).end(done);
+    });
+    /**
+     * Change password
+     */
+    it(`should change password`, (done) => {
+      chai
+        .request(app)
+        .post("/users/signin")
+        .send({
+          phone: userSample.phone,
+          password: userSample.password,
+        })
+        .end((_err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property("token");
+          expect(validator.isJWT(res.body.token)).to.be.true;
+          chai
+            .request(app)
+            .put("/users/change-password")
+            .set("Authorization", `JWT ${res.body.token}`)
+            .send({
+              oldPassword: userSample.oldPassword,
+              newPassword: "newpassword",
+            })
+            .end((_err, res) => {
+              console.log(`res.body`, res.body);
+              expect(res).to.have.status(200);
+              // expect(res.body).to.have.property("token");
+              // expect(validator.isJWT(res.body.token)).to.be.true;
+              done();
+            });
+        });
+    });
+  });
 });

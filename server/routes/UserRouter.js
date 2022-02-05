@@ -50,10 +50,20 @@ router.post(
   (req, res, next) => {
     const { phone, name, password, email } = req.body;
 
-    UserController.createUser(phone, name, password, email)
+    // Check user exists
+    UserController.hasUser(phone)
       .then((user) => {
-        // return username, _id
-        res.json({ phone: user.phone, name: user.name, _id: user._id });
+        if (user) {
+          throw new MiddlewareError(Language.Response.UserAlreadyExists);
+        }
+
+        // Create new user
+        UserController.createUser(phone, name, password, email)
+          .then((user) => {
+            // return username, _id
+            res.json({ phone: user.phone, name: user.name, _id: user._id });
+          })
+          .catch(next);
       })
       .catch(next);
   }
@@ -76,7 +86,7 @@ router.post(
     UserController.hasUser(phone)
       .then((_user) => {
         if (!_user) {
-          return next(new MiddlewareError(404, "User not found"));
+          return next(new MiddlewareError(404, Language.Response.UserNotFound));
         }
 
         // Compare password
@@ -85,7 +95,7 @@ router.post(
             // Password not match
             if (!result) {
               return next(
-                new MiddlewareError(400, Language.Response.UserNotFound)
+                new MiddlewareError(400, Language.Response.PasswordNotMatch)
               );
             }
 
@@ -114,13 +124,36 @@ router.get(`/me`, AuthMiddleware.forciblyRequireAuth, (req, res, next) => {
  * @param {*} oldPassword the old password
  * @param {*} newPassword the new password
  */
-router.get(
-  `change-password`,
+router.put(
+  `/change-password`,
   AuthMiddleware.forciblyRequireAuth,
-  PreconditionMiddleware.checkParameterQuery(`oldPassword`),
-  PreconditionMiddleware.checkParameterQuery(`newPassword`),
+  PreconditionMiddleware.checkParameterBody(`oldPassword`),
+  PreconditionMiddleware.checkParameterBody(`newPassword`),
   (req, res, next) => {
-    
+    const { oldPassword, newPassword } = req.body;
+    console.log(body);
+    // Compare old password first to ensure the user is the owner of the password
+    UserController.comparePassword(req.userData.phone, oldPassword).then(
+      (result) => {
+        // Password not match
+        if (!result) {
+          return next(
+            new MiddlewareError(400, Language.Response.UserPasswordNotMatch)
+          );
+        }
+
+        // Otherwise, set new password
+        UserController.setPassword(req.userData.phone, newPassword).then(
+          (result) => {
+            if (result) {
+              res.json({
+                message: Language.Response.Success,
+              });
+            }
+          }
+        );
+      }
+    );
   }
 );
 

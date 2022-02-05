@@ -50,6 +50,16 @@ async function getUser(phone) {
   return UserModel.findOne({ phone });
 }
 
+/**
+ * Changes user password.
+ *
+ * @param {*} phone a phone number
+ * @param {*} newPassword a new password of user
+ */
+async function changePassword(phone, newPassword) {
+  return UserModel.findOneAndUpdate({ phone }, { password: newPassword });
+}
+
 const UserController = {
   createUser,
   comparePassword,
