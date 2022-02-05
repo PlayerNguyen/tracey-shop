@@ -43,16 +43,17 @@ router.get("/", (req, res, next) => {
  */
 router.post(
   `/new/`,
-  PreconditionMiddleware.checkParameterBody(`username`),
+  PreconditionMiddleware.checkParameterBody(`phone`),
   PreconditionMiddleware.checkParameterBody(`password`),
+  PreconditionMiddleware.checkParameterBody(`name`),
   PreconditionMiddleware.checkParameterBody(`email`),
   (req, res, next) => {
-    const { username, password, email } = req.body;
+    const { phone, name, password, email } = req.body;
 
-    UserController.createUser(username, password, email)
+    UserController.createUser(phone, name, password, email)
       .then((user) => {
         // return username, _id
-        res.json({ username: user.username, _id: user._id });
+        res.json({ phone: user.phone, name: user.name, _id: user._id });
       })
       .catch(next);
   }
@@ -66,20 +67,20 @@ router.post(
  */
 router.post(
   `/signin`,
-  PreconditionMiddleware.checkParameterBody(`username`),
+  PreconditionMiddleware.checkParameterBody(`phone`),
   PreconditionMiddleware.checkParameterBody(`password`),
   (req, res, next) => {
-    const { username, password } = req.body;
+    const { phone, password } = req.body;
 
     // User check
-    UserController.hasUser(username)
-      .then((result) => {
-        if (!result) {
-          return next(new MiddlewareError(404));
+    UserController.hasUser(phone)
+      .then((_user) => {
+        if (!_user) {
+          return next(new MiddlewareError(404, "User not found"));
         }
 
         // Compare password
-        UserController.comparePassword(username, password)
+        UserController.comparePassword(phone, password)
           .then(async (result) => {
             // Password not match
             if (!result) {
@@ -90,7 +91,7 @@ router.post(
 
             res.json({
               token: await Token.createToken(
-                { username, _id: result._id },
+                { phone, name: _user.name, _id: _user._id },
                 process.env.USER_SESSION_EXPIRATION || "15m"
               ),
             });
@@ -104,8 +105,23 @@ router.post(
 /**
  * Get user information.
  */
-router.get("/me", AuthMiddleware.forciblyRequireAuth, (req, res, next) => {
+router.get(`/me`, AuthMiddleware.forciblyRequireAuth, (req, res, next) => {
   res.json({ data: req.userData });
 });
+
+/**
+ * Change the password of the user. Please notice that confirm the new password in the frontend.
+ * @param {*} oldPassword the old password
+ * @param {*} newPassword the new password
+ */
+router.get(
+  `change-password`,
+  AuthMiddleware.forciblyRequireAuth,
+  PreconditionMiddleware.checkParameterQuery(`oldPassword`),
+  PreconditionMiddleware.checkParameterQuery(`newPassword`),
+  (req, res, next) => {
+    
+  }
+);
 
 module.exports = router;

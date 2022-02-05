@@ -23,7 +23,7 @@ async function createToken(data, expire) {
 /**
  * Verify a token.
  *
- * @param {*} token a token to verify
+ * @param {string} token a token to verify
  * @returns a payload of the token
  */
 async function verifyToken(token) {

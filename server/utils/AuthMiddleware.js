@@ -11,6 +11,7 @@ function forciblyRequireAuth(req, res, next) {
   req.token = token;
   Token.verifyToken(token)
     .then((data) => {
+      console.log(data);
       req.userData = data;
       return next();
     })

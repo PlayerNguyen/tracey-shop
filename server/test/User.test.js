@@ -3,22 +3,24 @@ const expect = chai.expect;
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const app = require("../index");
-const mongoose = require("mongoose");
 const UserModel = require("../model/UserModel");
 const validator = require("validator");
 
 const userSample = {
-  username: "test",
+  // username: "test",
+  name: "test",
+  phone: "01919140284",
   password: "c9kVoOAjdhHXks@!I",
   email: "test@email.com",
 };
 
 afterEach(async function () {
-  const collections = await mongoose.connection.db.collections();
+  // const collections = await mongoose.connection.db.collections();
 
-  for (let collection of collections) {
-    await collection.deleteMany();
-  }
+  // for (let collection of collections) {
+  //   await collection.deleteMany();
+  // }
+  await UserModel.deleteMany({});
 });
 describe("User", function () {
   describe(`User create`, () => {
@@ -31,7 +33,9 @@ describe("User", function () {
           // check response status
           expect(res).to.have.status(200);
           // check response body
-          expect(res.body).to.have.property("username");
+          expect(res.body).to.be.an("object");
+          expect(res.body).to.have.property("phone");
+          expect(res.body).to.have.property("name");
           expect(res.body).to.have.property("_id");
           // check user in database
           UserModel.findOne({ username: userSample.username })
@@ -85,7 +89,7 @@ describe("User", function () {
         .request(app)
         .post("/users/signin")
         .send({
-          username: userSample.username,
+          phone: userSample.phone,
           password: userSample.password,
         })
         .end((_err, res) => {
@@ -95,6 +99,71 @@ describe("User", function () {
           expect(res.body.token).to.be.a("string");
           expect(validator.isJWT(res.body.token)).to.be.true;
           done();
+        });
+    });
+
+    it(`should thrown error when the phone is empty`, (done) => {
+      chai
+        .request(app)
+        .post("/users/signin")
+        .send({
+          phone: "",
+          password: userSample.password,
+        })
+        .end((_err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body.code).to.equal(400);
+
+          done();
+        });
+    });
+
+    it(`should thrown error when the password is empty`, (done) => {
+      chai
+        .request(app)
+        .post("/users/signin")
+        .send({
+          phone: userSample.phone,
+          password: "",
+        })
+        .end((_err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body.code).to.equal(400);
+
+          done();
+        });
+    });
+  });
+  describe(`User me `, () => {
+    before((done) => {
+      chai.request(app).post("/users/new").send(userSample).end(done);
+    });
+    it(`should provides data information about the user`, (done) => {
+      chai
+        .request(app)
+        .post("/users/signin")
+        .send({
+          phone: userSample.phone,
+          password: userSample.password,
+        })
+        .end((_err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property("token");
+          expect(validator.isJWT(res.body.token)).to.be.true;
+          chai
+            .request(app)
+            .get("/users/me")
+            .set("Authorization", `JWT ${res.body.token}`)
+            .end((_err, res) => {
+              expect(res).to.have.status(200);
+              // the data not empty
+              expect(res.body).to.be.an("object");
+              expect(res.body).to.have.property("data");
+              expect(res.body.data).to.have.property("phone");
+              expect(res.body.data).to.have.property("name");
+              expect(res.body.data).to.have.property("_id");
+              done();
+            });
         });
     });
   });
