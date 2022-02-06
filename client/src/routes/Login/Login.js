@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
 import Navbar from "../../components/Navbar/Navbar";
+import UserRequest from "../../requests/UserRequest";
 
 const Login = () => {
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault(true);
+    /**
+     * Sign in
+     */
+
+    UserRequest.createSignInRequest(phone, password).then((response) => {});
   };
   return (
     <div className="">
@@ -21,9 +30,11 @@ const Login = () => {
                   Số điện thoại
                 </label>
                 <input
-                  type="email"
+                  type="tel"
                   className="border border-gray-400 p-2 w-full outline-none rounded"
-                  id="email"
+                  id="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -34,12 +45,11 @@ const Login = () => {
                   type="password"
                   className="border border-gray-400 p-2 w-full outline-none rounded"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button
-                className="p-2 text-center bg-blue-400 rounded text-base mb-4"
-                to="/"
-              >
+              <button className="p-2 text-center bg-blue-400 rounded text-base mb-4">
                 Đăng nhập
               </button>
 
