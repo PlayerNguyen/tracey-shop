@@ -2,9 +2,11 @@ const Language = {
   Response: {
     FieldNotFoundOrEmpty: "Field is not found or empty",
     UsernameIsNotValid: "Username is not valid",
-    UserPasswordNotMatch: "Wrong password",
+    UserPasswordNotMatch: "Incorrect password",
     UserNotFound: "User not found",
     Unauthorized: "Unauthorized",
+    Success: "Success",
+    UserAlreadyExists: "User already exists",
   },
 };
 

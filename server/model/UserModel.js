@@ -2,22 +2,29 @@ const mongoose = require("mongoose");
 const Crypt = require("../utils/Crypt");
 
 const UserSchema = new mongoose.Schema({
-  username: {
+  phone: {
     type: String,
     required: true,
-    unique: true,
   },
   password: {
     type: String,
     required: true,
   },
+  name: {
+    type: String,
+  },
   email: {
     type: String,
-    required: true,
+  },
+  address: {
+    type: String,
   },
   admin: {
     type: Boolean,
     default: false,
+  },
+  point: {
+    type: Number,
   },
 });
 
