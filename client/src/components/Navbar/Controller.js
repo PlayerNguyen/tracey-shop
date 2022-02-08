@@ -8,7 +8,7 @@ const Controller = () => {
     { name: "Đăng nhập", icon: <User />, url: "/login" },
   ]);
   return (
-    <div className="flex flex-row text-gray-500 mx-12 gap-3 items-end align-middle">
+    <div className="flex flex-row text-gray-500 mx-0 md:mx-12 gap-3 items-end align-middle mt-4 md:my-0">
       {/* <Link to="/" className="flex flex-col align-baseline items-center p-2">
         <ShoppingCart />
         <span>Đơn hàng</span>
