@@ -9,7 +9,7 @@ export default function ProductItem() {
   });
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-1 cursor-pointer hover:scale-105 ease-in-out duration-300">
+    <div className="bg-white shadow-lg rounded-lg p-1 cursor-pointer hover:scale-105 ease-in-out duration-200">
       {/* Header, image */}
       <div>
         <img

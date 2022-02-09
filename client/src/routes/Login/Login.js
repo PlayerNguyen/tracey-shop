@@ -24,6 +24,7 @@ const Login = () => {
         setError(error);
       });
   };
+
   return (
     <div className="">
       {/* Header */}
@@ -31,8 +32,8 @@ const Login = () => {
         <Navbar />
       </div>
 
-      <div className="m-5 p-5 bg-white rounded shadow-md md:w-1/2 md:mx-auto md:my-12">
-        <div className="w-auto my-5 md:w-1/2 md:mx-auto">
+      <div className="m-5 p-5 bg-white rounded shadow-md md:w-1/2 lg:w-1/3 md:mx-auto md:my-12">
+        <div className="w-auto my-5 md:mx-auto px-5">
           <h1 className="text-3xl font-bold mb-4">Đăng nhập</h1>
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -69,12 +70,12 @@ const Login = () => {
               </div>
             )}
 
-            <button className="p-2 text-center bg-blue-200 rounded text-base mb-4">
+            <button className="p-2 text-center bg-blue-400 rounded text-base mb-4">
               Đăng nhập
             </button>
 
             <Link
-              className="p-2 text-center bg-green-200 rounded text-base mb-4"
+              className="p-2 text-center bg-green-400 rounded text-base mb-4"
               to="/signup"
             >
               Đăng ký
