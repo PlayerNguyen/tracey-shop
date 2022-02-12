@@ -7,6 +7,10 @@ const Language = {
     Unauthorized: "Unauthorized",
     Success: "Success",
     UserAlreadyExists: "User already exists",
+    EmptyFile: "Empty file",
+    FileNotImage: "File is not an image",
+    PrototypeExisted: "Prototype existed",
+    ProductNotFound: "Product not found",
   },
 };
 
