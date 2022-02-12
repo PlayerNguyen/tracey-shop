@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const productPropertiesSchema = mongoose.Schema({
+  key: {
+    type: String,
+    required: true,
+  },
+  value: {
+    type: Object,
+    required: true,
+  },
+});
+
 const productSchema = mongoose.Schema({
   name: {
     type: String,
@@ -7,10 +18,35 @@ const productSchema = mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
-  prototype: [{ type: mongoose.Schema.Types.ObjectId, ref: "Prototype" }],
+  price: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  sale: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  thumbnail: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ImageResource",
+    default: null,
+  },
+  images: [{ type: mongoose.Schema.Types.ObjectId, ref: "ImageResource" }],
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    default: null,
+  },
+  properties: [{ type: productPropertiesSchema }],
 });
+
+// productSchema.pre(`save`, function() {
+
+// })
 
 module.exports =
   mongoose.models.Product || mongoose.model("Product", productSchema);

@@ -21,6 +21,9 @@ app.use(express.static(path.join(__dirname, "./public")));
  * Router level
  */
 app.use(`/users`, require("./routes/UserRouter"));
+app.use(`/products`, require(`./routes/Product/ProductRouter`));
+app.use(`/resources`, require(`./routes/ImageResource/ImageResourceRouter`));
+app.use(`/category`, require(`./routes/Category/CategoryRouter`));
 
 /**
  * Error handler level
