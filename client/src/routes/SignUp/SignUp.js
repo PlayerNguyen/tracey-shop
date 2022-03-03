@@ -8,6 +8,8 @@ import UserRequest from "../../requests/UserRequest";
 const Signup = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isValidForm, setIsValidForm] = useState(false);
   const [error, setError] = useState(null);
@@ -36,9 +38,13 @@ const Signup = () => {
     }
 
     // Sign up
-    UserRequest.createSignUpRequest(phone, password).then((res) => {
-      console.log(res);
-    });
+    UserRequest.createSignUpRequest(phone, name, password, email)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   useEffect(() => {
@@ -53,11 +59,34 @@ const Signup = () => {
       <div>
         <Navbar />
       </div>
-
       <div className="m-5 p-5 bg-white rounded shadow-md md:w-1/2 lg:w-1/3 md:mx-auto md:my-12">
         <div className="w-auto my-5 md:mx-auto px-5">
           <h1 className="text-3xl font-bold mb-4">Đăng ký</h1>
           <form className="flex flex-col" onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="name" className="text-gray-700">
+                Tên
+              </label>
+              <input
+                type="text"
+                className="border border-gray-400 p-2 w-full outline-none rounded"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                className="border border-gray-400 p-2 w-full outline-none rounded"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
             <div className="mb-4">
               <label htmlFor="email" className="text-gray-700">
                 Số điện thoại
@@ -101,7 +130,7 @@ const Signup = () => {
                 <div className="basis-2 p-2">
                   <AlertTriangle />
                 </div>
-                <div>{error && error.message}</div>
+                <div>{error && error.response.data.error}</div>
               </div>
             )}
 

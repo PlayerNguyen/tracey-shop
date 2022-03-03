@@ -16,9 +16,11 @@ const Login = () => {
     /**
      * Sign in execute
      */
-
     UserRequest.createSignInRequest(phone, password)
-      .then((response) => {})
+      .then((response) => {
+        localStorage.setItem("token", response.data.token);
+        window.location.href = "/";
+      })
       .catch((error) => {
         console.log(`err: `, error.response.data);
         setError(error);

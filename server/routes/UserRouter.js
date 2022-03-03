@@ -54,7 +54,7 @@ router.post(
     UserController.hasUser(phone)
       .then((user) => {
         if (user) {
-          throw new MiddlewareError(Language.Response.UserAlreadyExists);
+          throw new MiddlewareError(500, Language.Response.UserAlreadyExists);
         }
 
         // Create new user

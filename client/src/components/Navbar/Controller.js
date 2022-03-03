@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, User } from "react-feather";
 
 const Controller = () => {
-  const [items] = useState([
-    { name: "Giỏ hàng", icon: <ShoppingCart />, url: "/cart" },
-    { name: "Đăng nhập", icon: <User />, url: "/login" },
-  ]);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    setItems([
+      ...items,
+      { name: "Giỏ hàng", icon: <ShoppingCart />, url: "/cart" },
+      { name: "Đăng nhập", icon: <User />, url: "/login" },
+    ]);
+  }, [items]);
   return (
     <div className="flex flex-row text-gray-500 mx-0 md:mx-12 gap-3 items-end align-middle mt-4 md:my-0">
       {/* <Link to="/" className="flex flex-col align-baseline items-center p-2">
