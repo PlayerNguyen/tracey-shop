@@ -8,6 +8,10 @@ const storage = multer.diskStorage({
     cb(null, process.env.UPLOAD_TEMP_DIRECTORY);
   },
   filename: function (req, file, cb) {
+    if (file.originalname.includes("public")) {
+      return cb(new Error("File name cannot contains public keywords"), null);
+    }
+
     const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, `${uniquePrefix}-${file.originalname}`);
   },
