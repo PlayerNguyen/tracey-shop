@@ -6,8 +6,9 @@ const path = require("path");
 const app = express();
 const mongoose = require("mongoose");
 const ErrorHandler = require("./utils/ErrorHandler");
+const { loadStaticService, getStaticServe } = require("./utils/StaticService");
 // require("dotenv").config({ debug: true });
-
+const STATIC_IMAGE_FOLDER = path.join(__dirname, "./public/images");
 /**
  * Third-party application level
  */
@@ -24,6 +25,13 @@ app.use(`/users`, require("./routes/UserRouter"));
 app.use(`/products`, require(`./routes/Product/ProductRouter`));
 app.use(`/resources`, require(`./routes/ImageResource/ImageResourceRouter`));
 app.use(`/category`, require(`./routes/Category/CategoryRouter`));
+
+/**
+ * Image Serve
+
+ */
+loadStaticService(STATIC_IMAGE_FOLDER);
+app.use(`/images`, getStaticServe(STATIC_IMAGE_FOLDER));
 
 /**
  * Error handler level
