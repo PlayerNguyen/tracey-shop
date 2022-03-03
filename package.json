@@ -4,6 +4,12 @@
   "private": "true",
   "scripts": {
     "test:server": "cd server && yarn test",
-    "test": "yarn test:server"
+    "test": "yarn test:server",
+    "dev:server": "cd server && yarn dev",
+    "dev:client": "cd client && yarn start",
+    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\""
+  },
+  "dependencies": {
+    "concurrently": "^7.0.0"
   }
 }
