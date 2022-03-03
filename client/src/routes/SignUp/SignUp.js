@@ -3,6 +3,7 @@ import { AlertTriangle } from "react-feather";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { Validator } from "../../helpers/Validator";
+import UserRequest from "../../requests/UserRequest";
 
 const Signup = () => {
   const [phone, setPhone] = useState("");
@@ -19,7 +20,6 @@ const Signup = () => {
      */
     console.log(phone, password, confirmPassword);
     // Check phone number
-    console.log(Validator.isValidatePhone(phone));
     if (!Validator.isValidatePhone(phone)) {
       setError({
         message: "Số điện thoại không hợp lệ",
@@ -34,6 +34,11 @@ const Signup = () => {
       });
       return;
     }
+
+    // Sign up
+    UserRequest.createSignUpRequest(phone, password).then((res) => {
+      console.log(res);
+    });
   };
 
   useEffect(() => {

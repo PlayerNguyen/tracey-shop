@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AxiosHelper = new axios.create({
-  baseURL: "http://localhost:1223",
+  baseURL: "http://localhost:3000",
 });
 
 AxiosHelper.interceptors.response.use(
