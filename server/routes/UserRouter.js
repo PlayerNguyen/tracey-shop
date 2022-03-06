@@ -31,12 +31,12 @@ router.post(
     (req, res, next) => {
         const { phone, name, password, email } = req.body;
 
-        // Check user exists
-        UserController.hasUser(phone)
-            .then((user) => {
-                if (user) {
-                    throw new MiddlewareError(Language.Response.UserAlreadyExists);
-                }
+    // Check user exists
+    UserController.hasUser(phone)
+      .then((user) => {
+        if (user) {
+          throw new MiddlewareError(500, Language.Response.UserAlreadyExists);
+        }
 
                 // Create new user
                 UserController.createUser(phone, name, password, email)
