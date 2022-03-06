@@ -10,13 +10,13 @@ const Crypt = require("../utils/Crypt");
  * @param  {*} more external information such as email address
  */
 async function createUser(phone, name, password, email, more) {
-  return UserModel.create({
-    phone,
-    name,
-    password: password,
-    email: email,
-    ...more,
-  });
+    return UserModel.create({
+        phone,
+        name,
+        password: password,
+        email: email,
+        ...more,
+    });
 }
 
 /**
@@ -27,8 +27,8 @@ async function createUser(phone, name, password, email, more) {
  * @returns true whether a password is matched, false otherwise
  */
 async function comparePassword(phone, password) {
-  const user = await UserModel.findOne({ phone });
-  return Crypt.comparePassword(password, user.password);
+    const user = await UserModel.findOne({ phone });
+    return Crypt.comparePassword(password, user.password);
 }
 
 /**
@@ -37,7 +37,7 @@ async function comparePassword(phone, password) {
  * @returns true whether a phone exists, false otherwise
  */
 async function hasUser(phone) {
-  return UserModel.findOne({ phone });
+    return UserModel.findOne({ phone });
 }
 
 /**
@@ -47,7 +47,11 @@ async function hasUser(phone) {
  * @returns a user which matched with username
  */
 async function getUser(phone) {
-  return UserModel.findOne({ phone });
+    return UserModel.findOne({ phone });
+}
+
+async function getAll() {
+    return UserModel.find({});
 }
 
 /**
@@ -57,13 +61,14 @@ async function getUser(phone) {
  * @param {*} newPassword a new password of user
  */
 async function changePassword(phone, newPassword) {
-  return UserModel.findOneAndUpdate({ phone }, { password: newPassword });
+    return UserModel.findOneAndUpdate({ phone }, { password: newPassword });
 }
 
 const UserController = {
-  createUser,
-  comparePassword,
-  hasUser,
-  getUser,
+    createUser,
+    comparePassword,
+    hasUser,
+    getUser,
+    getAll,
 };
 module.exports = UserController;
