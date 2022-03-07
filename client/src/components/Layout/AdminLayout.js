@@ -63,6 +63,16 @@ function AdminLayout() {
             path: "/dashboard/product",
             icon: "box-open",
         },
+        {
+            name: "Hóa đơn bán hàng",
+            path: "/dashboard/output-receipt",
+            icon: "box-open",
+        },
+        {
+            name: "Nhập hàng",
+            path: "/dashboard/input-receipt",
+            icon: "box-open",
+        },
     ];
     return (
         <>
@@ -98,7 +108,7 @@ function AdminLayout() {
                 </div>
                 <div className="flex items-center bg-gray-800 text-gray-300 p-3">
                     <span className="mx-auto">
-                        Player Zaff, 2020. All rights reserved.
+                        Player Zaff, 2022. All rights reserved.
                     </span>
                 </div>
             </div>

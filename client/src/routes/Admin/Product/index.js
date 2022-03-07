@@ -1,49 +1,97 @@
 import React from "react";
-// import * as userApi from "../../../utils/api/users";
-import UpdateUser from "./update";
+import productApi from "../../../requests/ProductRequest";
+import UpdateProduct from "./update";
 import { v1 as uuidv1 } from "uuid";
 import { toast } from "react-toastify";
+import ConfirmModal from "../../../components/Modal/confirm";
 
-function Users() {
-    const [users, setUsers] = React.useState([]);
+function Products() {
+    const [products, setProducts] = React.useState([]);
     const [updateModal, setUpdateModal] = React.useState(false);
+    const [updateProduct, setUpdateProduct] = React.useState(null);
     const [randomKey, setRandomKey] = React.useState(0);
+    const [confirmModal, setConfirmModal] = React.useState({
+        content: "",
+        onClose: () => {},
+        onConfirm: () => {},
+        open: false,
+        loading: false,
+    });
 
-    const fetchUsers = async () => {
+    const fetchProducts = async () => {
         try {
-            // const resp = await userApi.getAllUser();
-            // setUsers(resp.data);
+            const resp = await productApi.getAllProduct();
+            setProducts(resp.data);
         } catch (e) {
             console.error(e);
         }
     };
 
     React.useEffect(() => {
-        fetchUsers();
+        fetchProducts();
     }, []);
 
-    const handleOpenUpdateModal = () => {
+    const handleOpenUpdateModal = (selectedProduct = null) => {
         setRandomKey(uuidv1());
         setUpdateModal(true);
+        if (selectedProduct) {
+            setUpdateProduct(selectedProduct);
+        }
     };
 
     const handleCloseUpdateModal = () => {
         setUpdateModal(false);
+        if (updateProduct) {
+            setUpdateProduct(null);
+        }
     };
 
-    const handleSave = async (userData) => {
-        // try catch is in UpdateUser
-        // await userApi.register(userData);
-        toast.success("Tạo tài khoản thành công");
-        await fetchUsers();
+    const handleSave = async (product) => {
+        // try catch is in UpdateProduct
+        if (updateProduct) {
+            await productApi.updateProduct(updateProduct._id, product);
+            toast.success("Cập nhật sản phẩm thành công");
+        } else {
+            await productApi.createProduct(product);
+            toast.success("Tạo sản phẩm thành công");
+        }
+        await fetchProducts();
+    };
+
+    const handleDeleteTag = (product) => {
+        setConfirmModal({
+            content: `Bạn có chắc chắn muốn xóa danh mục '${product.name}' không?`,
+            open: true,
+            loading: false,
+            onClose: () => {
+                setConfirmModal({ ...confirmModal, open: false });
+            },
+            onConfirm: async () => {
+                setConfirmModal({ ...confirmModal, loading: true });
+                try {
+                    await productApi.deleteProduct(product._id);
+                    toast.success("Xóa sản phẩm thành công");
+                    await fetchProducts();
+                } catch (e) {
+                    console.error(e);
+                    toast.error("Xóa sản phẩm thất bại, vui lòng thử lại sau.");
+                } finally {
+                    setConfirmModal({
+                        ...confirmModal,
+                        loading: false,
+                        open: false,
+                    });
+                }
+            },
+        });
     };
 
     return (
         <>
-            <div className="text-2xl font-bold">Tài khoản</div>
+            <div className="text-2xl font-bold">Sản phẩm</div>
             <button
                 className="bg-transparent hover:underline hover:text-indigo-500 font-semibold px-2 py-1 mt-4"
-                onClick={handleOpenUpdateModal}
+                onClick={() => handleOpenUpdateModal()}
             >
                 Tạo mới
             </button>
@@ -52,31 +100,54 @@ function Users() {
                     <thead>
                         <tr className="bg-gray-900 text-white">
                             <th className="text-center w-16">#</th>
-                            <th>Tên đăng nhập</th>
-                            <th>Biệt danh</th>
-                            <th>Email</th>
+                            <th>Ảnh</th>
+                            <th>Tên</th>
+                            <th>Mô tả</th>
+                            <th>Giá tiền</th>
+                            <th>Giá khuyến mãi</th>
+                            <th>Danh mục</th>
+                            <th>Tác vụ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((_user, _idx) => (
-                            <tr key={_user.id} className="border-t even:bg-slate-50">
+                        {products.map((_product, _idx) => (
+                            <tr key={_product._id} className="border-t even:bg-slate-50">
                                 <td className="text-center py-2">{_idx + 1}</td>
-                                <td className="py-2">{_user.username}</td>
-                                <td className="py-2">{_user.nickname}</td>
-                                <td className="py-2">{_user.email}</td>
+                                <td className="py-2">{_product.thumbnail}</td>
+                                <td className="py-2">{_product.name}</td>
+                                <td className="py-2">{_product.description}</td>
+                                <td className="py-2">{_product.price}</td>
+                                <td className="py-2">{_product.sale}</td>
+                                <td className="py-2">{_product.category.name}</td>
+                                <td className="py-2 divide-x">
+                                    <button
+                                        className="bg-transparent hover:underline hover:text-indigo-500 px-2 py-1"
+                                        onClick={() => handleOpenUpdateModal(_product)}
+                                    >
+                                        Chỉnh sửa
+                                    </button>
+                                    <button
+                                        className="bg-transparent hover:underline hover:text-indigo-500 px-2 py-1"
+                                        onClick={() => handleDeleteTag(_product)}
+                                    >
+                                        Xóa
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <UpdateUser
+            <UpdateProduct
                 key={randomKey}
                 open={updateModal}
                 onClose={handleCloseUpdateModal}
                 onSave={handleSave}
+                updateProduct={updateProduct}
             />
+            <ConfirmModal {...confirmModal} />
         </>
     );
 }
 
-export default Users;
+export default Products;

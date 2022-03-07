@@ -4,9 +4,9 @@ async function createSignInRequest(phone, password) {
     return AxiosHelper.post("/users/signin", { phone, password });
 }
 
-async function register(user) {
+async function createUserByAdmin(user) {
     return AxiosHelper({
-        url: "/users/new",
+        url: "/users/create",
         method: "POST",
         data: user,
     });
@@ -21,12 +21,12 @@ async function getAllUser() {
 
 async function createSignUpRequest(phone, name, password, email) {
     console.log({ phone, password, name, email });
-    return AxiosHelper.post("/users/new", { phone, password, name, email });
+    return AxiosHelper.post("/users/register", { phone, password, name, email });
 }
 
 const UserRequest = {
     createSignInRequest,
-    register,
+    createUserByAdmin,
     getAllUser,
     createSignUpRequest,
 };

@@ -10,10 +10,10 @@ import AdminUser from "./routes/Admin/User";
 import AdminCategory from "./routes/Admin/Category";
 import AdminProduct from "./routes/Admin/Product";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBoxOpen, faList, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBoxOpen, faList, faPlus, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
 import UserLayout from "./components/Layout/UserLayout";
 
-library.add(faUser, faSpinner, faList, faBoxOpen);
+library.add(faUser, faSpinner, faList, faBoxOpen, faPlus);
 
 function App() {
     return (

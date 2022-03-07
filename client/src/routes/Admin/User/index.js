@@ -34,7 +34,7 @@ function User() {
 
     const handleSave = async (userData) => {
         // try catch is in UpdateUser
-        await userApi.register(userData);
+        await userApi.createUserByAdmin(userData);
         toast.success("Tạo tài khoản thành công");
         await fetchUsers();
     };
