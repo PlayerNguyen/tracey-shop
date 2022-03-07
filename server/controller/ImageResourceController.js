@@ -37,6 +37,7 @@ async function createFile(req, res, next) {
         // Create a file in database
         return ImageResourceModel.create({
           name: file.originalname,
+          fileName: file.filename,
           path: file.path.replace(/public/g, ""),
           uploadedAt: new Date(),
           size: file.size,

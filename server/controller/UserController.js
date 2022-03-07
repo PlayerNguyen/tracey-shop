@@ -9,14 +9,8 @@ const Crypt = require("../utils/Crypt");
  * @param  {*} email a email
  * @param  {*} more external information such as email address
  */
-async function createUser(phone, name, password, email, more) {
-    return UserModel.create({
-        phone,
-        name,
-        password: password,
-        email: email,
-        ...more,
-    });
+async function createUser(user) {
+    return UserModel.create(user);
 }
 
 /**

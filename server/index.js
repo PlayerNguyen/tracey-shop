@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const ErrorHandler = require("./utils/ErrorHandler");
 const { loadStaticService, getStaticServe } = require("./utils/StaticService");
 // require("dotenv").config({ debug: true });
-const STATIC_IMAGE_FOLDER = path.join(__dirname, "./public/images");
+const STATIC_IMAGE_FOLDER = process.env.UPLOAD_TEMP_DIRECTORY;
 /**
  * Third-party application level
  */

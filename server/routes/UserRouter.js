@@ -23,7 +23,7 @@ router.get("/", async (req, res, next) => {
  * @param {*} password a string password
  */
 router.post(
-    `/new/`,
+    `/register/`,
     PreconditionMiddleware.checkParameterBody(`phone`),
     PreconditionMiddleware.checkParameterBody(`password`),
     PreconditionMiddleware.checkParameterBody(`name`),
@@ -31,16 +31,52 @@ router.post(
     (req, res, next) => {
         const { phone, name, password, email } = req.body;
 
-    // Check user exists
-    UserController.hasUser(phone)
-      .then((user) => {
-        if (user) {
-          throw new MiddlewareError(500, Language.Response.UserAlreadyExists);
-        }
+        // Check user exists
+        UserController.hasUser(phone)
+            .then((user) => {
+                if (user) {
+                    throw new MiddlewareError(500, Language.Response.UserAlreadyExists);
+                }
 
                 // Create new user
-                UserController.createUser(phone, name, password, email)
+                const newUser = { phone, name, password, email };
+                UserController.createUser(newUser)
                     .then((user) => {
+                        // return username, _id
+                        res.json({ phone: user.phone, name: user.name, _id: user._id });
+                    })
+                    .catch(next);
+            })
+            .catch(next);
+    }
+);
+
+/**
+ * Create new user with admin role.
+ * @param {*} username a string username without special character
+ * @param {*} password a string password
+ */
+router.post(
+    `/create`,
+    PreconditionMiddleware.checkParameterBody(`phone`),
+    PreconditionMiddleware.checkParameterBody(`password`),
+    PreconditionMiddleware.checkParameterBody(`name`),
+    PreconditionMiddleware.checkParameterBody(`email`),
+    (req, res, next) => {
+        const { phone, name, password, email, address, admin } = req.body;
+
+        // Check user exists
+        UserController.hasUser(phone)
+            .then((user) => {
+                if (user) {
+                    throw new MiddlewareError(500, Language.Response.UserAlreadyExists);
+                }
+
+                // Create new user
+                const newUser = { phone, name, password, email, address, admin };
+                UserController.createUser(newUser)
+                    .then((user) => {
+                        console.log(user);
                         // return username, _id
                         res.json({ phone: user.phone, name: user.name, _id: user._id });
                     })
