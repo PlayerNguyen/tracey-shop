@@ -46,13 +46,13 @@ function Categories() {
         }
     };
 
-    const handleSave = async (keyword) => {
+    const handleSave = async (category) => {
         // try catch is in UpdateCategory
         if (updateCategory) {
-            await categoryApi.updateCategory(updateCategory.id, keyword);
+            await categoryApi.updateCategory(updateCategory._id, category);
             toast.success("Cập nhật danh mục hàng thành công");
         } else {
-            await categoryApi.createCategory(keyword);
+            await categoryApi.createCategory(category);
             toast.success("Tạo danh mục hàng thành công");
         }
         await fetchCategories();
@@ -69,7 +69,7 @@ function Categories() {
             onConfirm: async () => {
                 setConfirmModal({ ...confirmModal, loading: true });
                 try {
-                    await categoryApi.deleteCategory(category.id);
+                    await categoryApi.deleteCategory(category._id);
                     toast.success("Xóa danh mục hàng thành công");
                     await fetchCategories();
                 } catch (e) {
@@ -106,7 +106,7 @@ function Categories() {
                     </thead>
                     <tbody>
                         {categories.map((_category, _idx) => (
-                            <tr key={_category.id} className="border-t even:bg-slate-50">
+                            <tr key={_category._id} className="border-t even:bg-slate-50">
                                 <td className="text-center py-2">{_idx + 1}</td>
                                 <td className="py-2">{_category.name}</td>
                                 <td className="py-2 divide-x">

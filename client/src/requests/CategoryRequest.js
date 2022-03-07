@@ -2,14 +2,14 @@ import AxiosHelper from "../helpers/AxiosHelper";
 
 async function getAllCategory() {
     return AxiosHelper({
-        url: "/categories",
+        url: "/category",
         method: "GET",
     });
 }
 
 async function createCategory(category) {
     return AxiosHelper({
-        url: "/categories",
+        url: "/category",
         method: "POST",
         data: category,
     });
@@ -17,7 +17,7 @@ async function createCategory(category) {
 
 async function updateCategory(id, category) {
     return AxiosHelper({
-        url: `/categories/${id}`,
+        url: `/category/${id}`,
         method: "PUT",
         data: category,
     });
@@ -25,7 +25,7 @@ async function updateCategory(id, category) {
 
 async function deleteCategory(id) {
     return AxiosHelper({
-        url: `/categories/${id}`,
+        url: `/category/${id}`,
         method: "DELETE",
     });
 }

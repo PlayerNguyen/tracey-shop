@@ -4,17 +4,18 @@ const PreconditionMiddleware = require("../../utils/PreconditionMiddleware");
 const router = express.Router();
 
 router.post(
-  `/`,
-  PreconditionMiddleware.checkParameterBody(`name`),
-  PreconditionMiddleware.checkParameterBody(`keys`),
-  CategoryController.createCategory
+    `/`,
+    PreconditionMiddleware.checkParameterBody(`name`),
+    PreconditionMiddleware.checkParameterBody(`keys`),
+    CategoryController.createCategory
 );
 router.put(
-  `/:id`,
-  PreconditionMiddleware.checkParameterBody(`name`),
-  PreconditionMiddleware.checkParameterBody(`keys`),
-  CategoryController.updateCategory
+    `/:id`,
+    PreconditionMiddleware.checkParameterBody(`name`),
+    PreconditionMiddleware.checkParameterBody(`keys`),
+    CategoryController.updateCategory
 );
+router.delete(`/:id`, CategoryController.deleteCategory);
 
 router.get(`/`, CategoryController.getAllCategories);
 

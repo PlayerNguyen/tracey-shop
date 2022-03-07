@@ -19,7 +19,7 @@ function Modal(props) {
                 className={classNames(
                     open ? "block" : "hidden",
                     dimmer && "bg-black/50",
-                    "fixed w-full h-screen top-0 left-0 flex items-center justify-center"
+                    "fixed w-full h-screen top-0 left-0 flex items-center justify-center overflow-auto"
                 )}
                 onClick={onClose}
             >

@@ -3,8 +3,9 @@ import React from "react";
 import { toast } from "react-toastify";
 import Modal from "../../../components/Modal";
 import { classNames } from "../../../helpers/Common";
+import { v4 as uuidv4 } from "uuid";
 
-function UpdateBookTag({ open, onClose, onSave, updateCategory }) {
+function UpdateCategory({ open, onClose, onSave, updateCategory }) {
     const [category, setCategory] = React.useState({
         name: "",
         keys: [],
@@ -13,18 +14,24 @@ function UpdateBookTag({ open, onClose, onSave, updateCategory }) {
 
     React.useEffect(() => {
         if (updateCategory) {
-            setCategory({ ...updateCategory });
+            setCategory({
+                ...updateCategory,
+                keys: updateCategory.keys.map((_key, _idx) => ({ ..._key, id: _idx })),
+            });
         }
     }, [updateCategory]);
 
     const handleChangeCategoryName = (e) => {
-        setCategory(e.target.value);
+        setCategory({ ...category, name: e.target.value });
     };
 
     const handleSave = async () => {
         try {
             setLoading(true);
-            await onSave(category);
+            await onSave({
+                ...category,
+                keys: category.keys.map((_key) => ({ key: _key.key, isRequired: _key.isRequired })),
+            });
             onClose();
         } catch (e) {
             toast.error(
@@ -35,6 +42,42 @@ function UpdateBookTag({ open, onClose, onSave, updateCategory }) {
         } finally {
             setLoading(false);
         }
+    };
+
+    const addKey = () => {
+        setCategory({
+            ...category,
+            keys: [
+                ...category.keys,
+                {
+                    id: uuidv4(),
+                    key: "",
+                    isRequired: false,
+                },
+            ],
+        });
+    };
+
+    const updateKey = (id, field, value) => {
+        setCategory({
+            ...category,
+            keys: category.keys.map((key) => {
+                if (key.id === id) {
+                    return {
+                        ...key,
+                        [field]: value,
+                    };
+                }
+                return key;
+            }),
+        });
+    };
+
+    const removeKey = (id) => {
+        setCategory({
+            ...category,
+            keys: category.keys.filter((key) => key.id !== id),
+        });
     };
 
     return (
@@ -51,6 +94,44 @@ function UpdateBookTag({ open, onClose, onSave, updateCategory }) {
                             value={category.name}
                             onChange={handleChangeCategoryName}
                         />
+                    </div>
+                    <div className="overflow-auto max-h-96 border border-gray-200 rounded-lg">
+                        {category.keys.map((_key) => (
+                            <div className="mt-4 mb-4 p-4" key={_key.id}>
+                                <label>Thuộc tính</label>
+                                <input
+                                    className="input w-full"
+                                    value={_key.key}
+                                    onChange={(e) => updateKey(_key.id, "key", e.target.value)}
+                                />
+                                <div className="flex">
+                                    <div className="flex-grow">
+                                        <label>Phải có:</label>
+                                        <input
+                                            type="checkbox"
+                                            className="ml-2"
+                                            checked={_key.isRequired}
+                                            onChange={(e) =>
+                                                updateKey(_key.id, "isRequired", e.target.checked)
+                                            }
+                                        />
+                                    </div>
+                                    <div>
+                                        <button
+                                            className="text-red-600 hover:underline hover:font-semibold"
+                                            onClick={() => removeKey(_key.id)}
+                                        >
+                                            Xóa
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-4 mb-4">
+                        <button className="hover:underline hover:font-semibold" onClick={addKey}>
+                            Thêm thuộc tính mới
+                        </button>
                     </div>
                     <div className="text-right">
                         <button
@@ -76,4 +157,4 @@ function UpdateBookTag({ open, onClose, onSave, updateCategory }) {
     );
 }
 
-export default UpdateBookTag;
+export default UpdateCategory;
