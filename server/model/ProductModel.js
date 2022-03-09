@@ -6,7 +6,7 @@ const productPropertiesSchema = mongoose.Schema({
     required: true,
   },
   value: {
-    type: Object,
+    type: String,
     required: true,
   },
 });

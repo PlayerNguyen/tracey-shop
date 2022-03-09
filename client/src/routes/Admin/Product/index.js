@@ -1,5 +1,6 @@
 import React from "react";
 import productApi from "../../../requests/ProductRequest";
+import categoryApi from "../../../requests/CategoryRequest";
 import UpdateProduct from "./update";
 import { v1 as uuidv1 } from "uuid";
 import { toast } from "react-toastify";
@@ -7,6 +8,7 @@ import ConfirmModal from "../../../components/Modal/confirm";
 
 function Products() {
     const [products, setProducts] = React.useState([]);
+    const [categories, setCategories] = React.useState([]);
     const [updateModal, setUpdateModal] = React.useState(false);
     const [updateProduct, setUpdateProduct] = React.useState(null);
     const [randomKey, setRandomKey] = React.useState(0);
@@ -27,8 +29,18 @@ function Products() {
         }
     };
 
+    const fetchCategories = async () => {
+        try {
+            const resp = await categoryApi.getAllCategory();
+            setCategories(resp.data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     React.useEffect(() => {
         fetchProducts();
+        fetchCategories();
     }, []);
 
     const handleOpenUpdateModal = (selectedProduct = null) => {
@@ -96,13 +108,12 @@ function Products() {
                 Tạo mới
             </button>
             <div className="border rounded mt-2 overflow-hidden">
-                <table className="table-auto w-full">
+                <table className="table-fixed w-full">
                     <thead>
                         <tr className="bg-gray-900 text-white">
                             <th className="text-center w-16">#</th>
                             <th>Ảnh</th>
                             <th>Tên</th>
-                            <th>Mô tả</th>
                             <th>Giá tiền</th>
                             <th>Giá khuyến mãi</th>
                             <th>Danh mục</th>
@@ -113,9 +124,13 @@ function Products() {
                         {products.map((_product, _idx) => (
                             <tr key={_product._id} className="border-t even:bg-slate-50">
                                 <td className="text-center py-2">{_idx + 1}</td>
-                                <td className="py-2">{_product.thumbnail}</td>
+                                <td className="py-2">
+                                    <img
+                                        src={`${process.env.REACT_APP_ORIGIN_BACKEND}/images/${_product.thumbnail.fileName}`}
+                                        alt={_product.name}
+                                    />
+                                </td>
                                 <td className="py-2">{_product.name}</td>
-                                <td className="py-2">{_product.description}</td>
                                 <td className="py-2">{_product.price}</td>
                                 <td className="py-2">{_product.sale}</td>
                                 <td className="py-2">{_product.category.name}</td>
@@ -144,6 +159,7 @@ function Products() {
                 onClose={handleCloseUpdateModal}
                 onSave={handleSave}
                 updateProduct={updateProduct}
+                categories={categories}
             />
             <ConfirmModal {...confirmModal} />
         </>

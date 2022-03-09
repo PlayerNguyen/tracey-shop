@@ -6,8 +6,9 @@ import { classNames } from "../../../helpers/Common";
 import { v4 as uuidv4 } from "uuid";
 import resourceApi from "../../../requests/ResourceRequest";
 import UploadSingleImg from "./upload-single-img";
+import Select from "react-select";
 
-function UpdateProduct({ open, onClose, onSave, updateProduct }) {
+function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
     const [product, setProduct] = React.useState({
         name: "",
         description: "",
@@ -17,6 +18,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct }) {
         images: [],
         imageData: [],
         category: null,
+        categoryOption: null,
         properties: [],
     });
     const [loading, setLoading] = React.useState(false);
@@ -38,6 +40,10 @@ function UpdateProduct({ open, onClose, onSave, updateProduct }) {
             setLoading(true);
             await onSave({
                 ...product,
+                properties: product.properties.map((_property) => ({
+                    key: _property.key,
+                    value: _property.value,
+                })),
             });
             onClose();
         } catch (e) {
@@ -153,6 +159,28 @@ function UpdateProduct({ open, onClose, onSave, updateProduct }) {
         }
     };
 
+    const handleChangeCategory = (selectedOption) => {
+        const selectedCategory = categories.find(
+            (_category) => _category._id === selectedOption.value
+        );
+        setProduct({
+            ...product,
+            category: selectedOption.value,
+            categoryOption: selectedOption,
+            properties: selectedCategory.keys.map((_key) => ({
+                key: _key.key,
+                value: "",
+                isRequired: _key.isRequired,
+                id: uuidv4(),
+            })),
+        });
+    };
+
+    const categoryOptions = categories.map((_category) => ({
+        label: _category.name,
+        value: _category._id,
+    }));
+
     return (
         <>
             <Modal dimmer open={open} onClose={onClose}>
@@ -161,12 +189,12 @@ function UpdateProduct({ open, onClose, onSave, updateProduct }) {
                         {updateProduct ? "Cập nhật sản phẩm" : "Tạo sản phẩm mới"}
                     </div>
                     <div className="flex mt-2">
-                        <div className="shrink-0 w-52 h-60 p-2">
+                        <div className="shrink-0 h-60 p-2">
                             <label
                                 htmlFor="product-thumbnail-upload"
                                 className={classNames(
                                     product.thumbnail ? "border-gray-800" : "border-green-700",
-                                    "h-full border rounded-lg flex items-center cursor-pointer select-none overflow-hidden"
+                                    "w-52 h-full border rounded-lg flex items-center cursor-pointer select-none overflow-hidden"
                                 )}
                             >
                                 {product.thumbnail ? (
@@ -223,7 +251,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct }) {
                         </div>
                     </div>
                     <div className="grid grid-cols-4 gap-8">
-                        <div className="mt-4 mb-4">
+                        <div>
                             <label>Tên sản phẩm</label>
                             <input
                                 className="input w-full"
@@ -231,32 +259,39 @@ function UpdateProduct({ open, onClose, onSave, updateProduct }) {
                                 onChange={(e) => handleChangeProduct("name", e.target.value)}
                             />
                         </div>
-                        <div className="mt-4 mb-4">
-                            <label>Mô tả</label>
+                        <div>
+                            <label>Giá gốc</label>
                             <input
                                 className="input w-full"
-                                value={product.name}
-                                onChange={(e) => handleChangeProduct("name", e.target.value)}
+                                value={product.price}
+                                onChange={(e) => handleChangeProduct("price", e.target.value)}
                             />
                         </div>
-                        <div className="mt-4 mb-4">
-                            <label>Giá tiền</label>
+                        <div>
+                            <label>Giá khuyến mại</label>
                             <input
                                 className="input w-full"
-                                value={product.name}
-                                onChange={(e) => handleChangeProduct("name", e.target.value)}
+                                value={product.sale}
+                                onChange={(e) => handleChangeProduct("sale", e.target.value)}
                             />
                         </div>
-                        <div className="mt-4 mb-4">
+                        <div>
                             <label>Danh mục</label>
-                            <input
-                                className="input w-full"
-                                value={product.name}
-                                onChange={(e) => handleChangeProduct("name", e.target.value)}
+                            <Select
+                                value={product.categoryOption}
+                                options={categoryOptions}
+                                onChange={handleChangeCategory}
                             />
                         </div>
                     </div>
-
+                    <div>
+                        <label>Mô tả</label>
+                        <textarea
+                            className="input w-full"
+                            value={product.description}
+                            onChange={(e) => handleChangeProduct("description", e.target.value)}
+                        />
+                    </div>
                     <div className="overflow-auto max-h-96 border border-gray-200 rounded-lg">
                         {product.properties.map((_property) => (
                             <div className="grid grid-cols-2 gap-8 p-2" key={_property.id}>
@@ -280,7 +315,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct }) {
                                                 updateProperty(
                                                     _property.id,
                                                     "value",
-                                                    e.target.checked
+                                                    e.target.value
                                                 )
                                             }
                                         />
