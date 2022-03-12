@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import Navbar from "../../components/Navbar/Navbar";
+import { Navbar } from "../../components";
 import UserRequest from "../../requests/UserRequest";
 import { AlertTriangle } from "react-feather";
 
@@ -11,21 +11,21 @@ const Login = () => {
 
     const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault(true);
-    /**
-     * Sign in execute
-     */
-    UserRequest.createSignInRequest(phone, password)
-      .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        window.location.href = "/";
-      })
-      .catch((error) => {
-        console.log(`err: `, error.response.data);
-        setError(error);
-      });
-  };
+    const handleSubmit = (e) => {
+        e.preventDefault(true);
+        /**
+         * Sign in execute
+         */
+        UserRequest.createSignInRequest(phone, password)
+            .then((response) => {
+                localStorage.setItem("token", response.data.token);
+                window.location.href = "/";
+            })
+            .catch((error) => {
+                console.log(`err: `, error.response.data);
+                setError(error);
+            });
+    };
 
     return (
         <div className="">

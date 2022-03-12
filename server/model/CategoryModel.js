@@ -5,10 +5,6 @@ mongoose.plugin(URLSlug);
 
 const categorySectionSchema = mongoose.Schema(
     {
-        slug: {
-            type: String,
-            slug: "name",
-        },
         key: {
             type: String,
             required: true,
@@ -31,6 +27,10 @@ const categorySchema = mongoose.Schema({
             type: categorySectionSchema,
         },
     ],
+    slug: {
+        type: String,
+        slug: "name",
+    },
 });
 
 module.exports = mongoose.models.Category || mongoose.model("Category", categorySchema);

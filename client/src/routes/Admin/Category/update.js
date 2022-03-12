@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { toast } from "react-toastify";
-import Modal from "../../../components/Modal";
+import { Modal } from "../../../components";
 import { classNames } from "../../../helpers/Common";
 import { v4 as uuidv4 } from "uuid";
 

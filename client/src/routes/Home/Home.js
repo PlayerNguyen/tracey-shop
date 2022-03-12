@@ -1,45 +1,30 @@
 import React from "react";
-import ProductItem from "../../components/ProductItem/ProductItem";
+import Banners from "./Banners";
+import categoryApi from "../../requests/CategoryRequest";
+import CategorySection from "./CategorySection";
 
 const Home = () => {
+    const [categories, setCategories] = React.useState([]);
+
+    React.useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const resp = await categoryApi.getAllCategory();
+            setCategories(resp.data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
         <>
-            <div className="bg-white p-4 my-2">
-                <h1 className="font-bold text-3xl mb-2">Máy tính</h1>
-                <div className="flex flex-col md:flex-row gap-4">
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                </div>
-            </div>
-            <div className="bg-white p-4 my-2">
-                <h1 className="font-bold text-3xl mb-2">Điện thoại</h1>
-                <div className="flex flex-col md:flex-row gap-4">
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                </div>
-            </div>
-            <div className="bg-white p-4 my-2">
-                <h1 className="font-bold text-3xl mb-2">Bàn phím</h1>
-                <div className="flex flex-col md:flex-row gap-4">
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                </div>
-            </div>
-            <div className="bg-white p-4 my-2">
-                <h1 className="font-bold text-3xl mb-2">Màn hình</h1>
-                <div className="flex flex-col md:flex-row gap-4">
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                </div>
-            </div>
+            <Banners />
+            {categories.map((_category) => (
+                <CategorySection category={_category} key={_category._id} />
+            ))}
         </>
     );
 };

@@ -4,7 +4,8 @@ import categoryApi from "../../../requests/CategoryRequest";
 import UpdateProduct from "./update";
 import { v1 as uuidv1 } from "uuid";
 import { toast } from "react-toastify";
-import ConfirmModal from "../../../components/Modal/confirm";
+import { ConfirmModal } from "../../../components";
+import { getImageUrl } from "../../../helpers/Common";
 
 function Products() {
     const [products, setProducts] = React.useState([]);
@@ -126,7 +127,7 @@ function Products() {
                                 <td className="text-center py-2">{_idx + 1}</td>
                                 <td className="py-2">
                                     <img
-                                        src={`${process.env.REACT_APP_ORIGIN_BACKEND}/images/${_product.thumbnail.fileName}`}
+                                        src={getImageUrl(_product.thumbnail.fileName)}
                                         alt={_product.name}
                                     />
                                 </td>

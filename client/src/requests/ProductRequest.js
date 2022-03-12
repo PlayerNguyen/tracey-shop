@@ -7,6 +7,23 @@ async function getAllProduct() {
     });
 }
 
+async function getProductByCategory(categorySlug = "") {
+    return AxiosHelper({
+        url: "/products",
+        method: "GET",
+        params: {
+            category: categorySlug,
+        },
+    });
+}
+
+async function getProductById(id) {
+    return AxiosHelper({
+        url: `/products/${id}`,
+        method: "GET",
+    });
+}
+
 async function createProduct(product) {
     return AxiosHelper({
         url: "/products",
@@ -32,6 +49,8 @@ async function deleteProduct(id) {
 
 const ProductRequest = {
     getAllProduct,
+    getProductByCategory,
+    getProductById,
     createProduct,
     updateProduct,
     deleteProduct,

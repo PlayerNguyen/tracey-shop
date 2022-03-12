@@ -10,15 +10,15 @@ export default function Navbar() {
                         md:bg-white md:p-4 drop-shadow-xl flex flex-col
                         md:flex-row gap-3 md:align-baseline md:items-center mt-3 md:mt-0 p-5"
         >
-            <div className="hidden md:flex md:basis-1/4">
+            <div className="hidden md:flex md:basis-1/6">
                 <Link to="/">
                     <h1 className="text-blue-500 text-2xl uppercase font-bold">BRAND.com</h1>
                 </Link>
             </div>
-            <div className="md:basis-2/4">
+            <div className="md:basis-1/2">
                 <Searchbox />
             </div>
-            <div className="md:basis-1/4">
+            <div className="md:basis-1/3">
                 <Controller />
             </div>
         </div>

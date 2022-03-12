@@ -3,7 +3,7 @@ import categoryApi from "../../../requests/CategoryRequest";
 import UpdateCategory from "./update";
 import { v1 as uuidv1 } from "uuid";
 import { toast } from "react-toastify";
-import ConfirmModal from "../../../components/Modal/confirm";
+import { ConfirmModal } from "../../../components";
 
 function Categories() {
     const [categories, setCategories] = React.useState([]);

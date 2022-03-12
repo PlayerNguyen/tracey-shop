@@ -1,4 +1,5 @@
 const ProductModel = require("../model/ProductModel");
+const CategoryModel = require("../model/CategoryModel");
 const Language = require("../utils/Language");
 const MiddlewareError = require("../utils/MiddlewareError");
 
@@ -81,30 +82,28 @@ async function deleteProduct(req, res, next) {
  */
 async function getAllProducts(req, res, next) {
     try {
-        const products = await ProductModel.aggregate([
-            {
-                $lookup: {
-                    from: "imageresources",
-                    localField: "thumbnail",
-                    foreignField: "_id",
-                    as: "thumbnail",
-                },
-            },
-            {
-                $lookup: {
-                    from: "categories",
-                    localField: "category",
-                    foreignField: "_id",
-                    as: "category",
-                },
-            },
-            {
-                $addFields: {
-                    thumbnail: { $arrayElemAt: ["$thumbnail", 0] },
-                    category: { $arrayElemAt: ["$category", 0] },
-                },
-            },
-        ]);
+        const { category, skip, limit } = req.query;
+        const categoryFound = await CategoryModel.findOne({
+            slug: category,
+        });
+        if (category && !categoryFound) {
+            throw new Error("Không tìm thấy danh mục hàng");
+        }
+
+        let products = ProductModel.find({});
+        if (category) {
+            products = ProductModel.find({
+                category: categoryFound._id,
+            });
+        }
+        if (skip) {
+            products = products.skip(skip);
+        }
+        if (limit) {
+            products = products.skip(limit);
+        }
+        products = products.populate("category").populate("images").populate("thumbnail");
+        products = await products;
         res.json(products);
     } catch (err) {
         next(err);

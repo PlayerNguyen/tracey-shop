@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { toast } from "react-toastify";
-import Modal from "../../../components/Modal";
-import { classNames } from "../../../helpers/Common";
+import { Modal } from "../../../components";
+import { classNames, getImageUrl } from "../../../helpers/Common";
 import { v4 as uuidv4 } from "uuid";
 import resourceApi from "../../../requests/ResourceRequest";
+import productApi from "../../../requests/ProductRequest";
 import UploadSingleImg from "./upload-single-img";
 import Select from "react-select";
 
@@ -23,10 +24,30 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
     });
     const [loading, setLoading] = React.useState(false);
 
+    const categoryOptions = categories.map((_category) => ({
+        label: _category.name,
+        value: _category._id,
+    }));
+
     React.useEffect(() => {
         if (updateProduct) {
             setProduct({
                 ...updateProduct,
+                images: updateProduct.images.map((_img) => _img._id),
+                imageData: updateProduct.images.map((_img) => ({
+                    id: _img._id,
+                    content: _img.fileName,
+                })),
+                category: updateProduct.category._id,
+                categoryOption: categoryOptions.find(
+                    (_option) => _option.value === updateProduct.category._id
+                ),
+                thumbnail: updateProduct.thumbnail._id,
+                thumbnailImg: updateProduct.thumbnail.fileName,
+                properties: updateProduct.properties.map((_property, _idx) => ({
+                    ..._property,
+                    id: _idx,
+                })),
             });
         }
     }, [updateProduct]);
@@ -176,11 +197,6 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
         });
     };
 
-    const categoryOptions = categories.map((_category) => ({
-        label: _category.name,
-        value: _category._id,
-    }));
-
     return (
         <>
             <Modal dimmer open={open} onClose={onClose}>
@@ -199,7 +215,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
                             >
                                 {product.thumbnail ? (
                                     <img
-                                        src={`${process.env.REACT_APP_ORIGIN_BACKEND}/images/${product.thumbnailImg}`}
+                                        src={getImageUrl(product.thumbnailImg)}
                                         className="w-full"
                                         alt="thumbnail"
                                     />
@@ -310,7 +326,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
                                         <label>Giá trị</label>
                                         <input
                                             className="input w-full"
-                                            checked={_property.value}
+                                            value={_property.value}
                                             onChange={(e) =>
                                                 updateProperty(
                                                     _property.id,

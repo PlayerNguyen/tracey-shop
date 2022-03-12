@@ -8,20 +8,20 @@ function UserLayout() {
         <>
             <div>
                 {/* Nav bar first */}
-                <div className="header">
+                <div className="header mb-4">
                     <Navbar />
                 </div>
 
                 {/* Introduction tabs */}
-                <div className="body flex flex-col md:flex-row">
-                    {/*  Left category */}
-                    <CategoryAside />
-                    {/* Mid item */}
-                    <div className="md:basis-2/3">
-                        <Outlet />
+                <div className="grid grid-cols-12">
+                    <div className="body col-start-2 col-span-10 flex flex-col md:flex-row gap-4">
+                        <div className="md:basis-1/6">
+                            <CategoryAside />
+                        </div>
+                        <div className="md:basis-5/6">
+                            <Outlet />
+                        </div>
                     </div>
-                    {/* Right item */}
-                    <div className="md:basis-1/6"></div>
                 </div>
             </div>
         </>
