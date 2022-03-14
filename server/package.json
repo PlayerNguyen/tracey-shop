@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon -r dotenv/config . dotenv_config_path=env/.env",
+    "start": "node -r dotenv/config . dotenv_config_path=env/.env",
     "test": "env-cmd -f ./env/.test.env mocha --exit"
   },
   "dependencies": {
