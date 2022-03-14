@@ -1,6 +1,7 @@
 import React from "react";
 import productApi from "../../requests/ProductRequest";
 import { ProductItem } from "../../components";
+import { Link } from "react-router-dom";
 
 function CategorySection({ category }) {
     const [products, setProducts] = React.useState([]);
@@ -20,8 +21,12 @@ function CategorySection({ category }) {
 
     return (
         <>
-            <div>
-                <h3>{category.name}</h3>
+            <div className="bg-white rounded-lg my-2 p-3">
+                <Link to={category.slug}>
+                    <h3 className="font-semibold hover:underline text-xl">
+                        {category.name}
+                    </h3>
+                </Link>
                 <div className="grid grid-cols-5">
                     {products.map((_product) => (
                         <ProductItem product={_product} key={_product._id} />

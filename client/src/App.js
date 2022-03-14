@@ -11,10 +11,17 @@ import AdminUser from "./routes/Admin/User";
 import AdminCategory from "./routes/Admin/Category";
 import AdminProduct from "./routes/Admin/Product";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBoxOpen, faList, faPlus, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+    faBoxOpen,
+    faChevronDown,
+    faList,
+    faPlus,
+    faSpinner,
+    faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
 
-library.add(faUser, faSpinner, faList, faBoxOpen, faPlus);
+library.add(faUser, faSpinner, faList, faBoxOpen, faPlus, faChevronDown);
 
 function App() {
     return (

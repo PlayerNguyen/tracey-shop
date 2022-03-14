@@ -2,6 +2,7 @@ import React from "react";
 import Banners from "./Banners";
 import categoryApi from "../../requests/CategoryRequest";
 import CategorySection from "./CategorySection";
+import { CategoryAside } from "../../components";
 
 const Home = () => {
     const [categories, setCategories] = React.useState([]);
@@ -21,7 +22,14 @@ const Home = () => {
 
     return (
         <>
-            <Banners />
+            <div className="flex gap-4">
+                <div className="md:basis-1/6">
+                    <CategoryAside />
+                </div>
+                <div className="md:basis-5/6">
+                    <Banners />
+                </div>
+            </div>
             {categories.map((_category) => (
                 <CategorySection category={_category} key={_category._id} />
             ))}
