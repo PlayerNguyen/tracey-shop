@@ -1,5 +1,5 @@
 const ManufacturerModel = require("../model/ManufacturerModel");
-
+const SlugifyHelper = require("../utils/SlugifyHelper");
 const ManufacturerController = {
   /**
    *  Retrieves all manufacturer
@@ -43,6 +43,24 @@ const ManufacturerController = {
         data: {
           message: "Manufacturer deleted",
         },
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  /**
+   * Update manufacturer
+   */
+  updateManufacturer: async (req, res, next) => {
+    try {
+      const { name, thumbnail } = req.body;
+      const manufacturer = await ManufacturerModel.findByIdAndUpdate(
+        req.params.id,
+        { name, thumbnail, slug: SlugifyHelper(name) },
+        { new: true }
+      );
+      res.json({
+        data: manufacturer,
       });
     } catch (err) {
       throw err;
