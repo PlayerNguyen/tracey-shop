@@ -7,7 +7,10 @@
     "test": "yarn test:server",
     "dev:server": "cd server && yarn dev",
     "dev:client": "cd client && yarn start",
-    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\""
+    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
+    "install:server": "cd server && yarn install",
+    "install:client": "cd client && yarn install",
+    "install": "concurrently \"yarn install:server\" \"yarn install:client\""
   },
   "dependencies": {
     "concurrently": "^7.0.0",
