@@ -45,6 +45,11 @@ const productSchema = mongoose.Schema({
         ref: "ImageResource",
         default: null,
     },
+    manufacturer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Manufacturer",
+        default: null,
+    },
     images: [{ type: mongoose.Schema.Types.ObjectId, ref: "ImageResource" }],
     category: {
         type: mongoose.Schema.Types.ObjectId,

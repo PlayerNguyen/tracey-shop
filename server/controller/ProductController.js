@@ -39,7 +39,7 @@ async function updateProduct(req, res, next) {
             throw new MiddlewareError(404, Language.Response.ProductNotFound);
         }
 
-        const { name, description, price, sale, thumbnail, images, category, properties } =
+        const { name, description, price, sale, thumbnail, images, category, properties, manufacturer } =
             req.body;
 
         const product = await ProductModel.findByIdAndUpdate(id, {
@@ -51,6 +51,7 @@ async function updateProduct(req, res, next) {
             images,
             category,
             properties,
+            manufacturer
         });
 
         res.json(product);
@@ -102,7 +103,11 @@ async function getAllProducts(req, res, next) {
         if (limit) {
             products = products.skip(limit);
         }
-        products = products.populate("category").populate("images").populate("thumbnail");
+        products = products
+            .populate("category")
+            .populate("images")
+            .populate("thumbnail")
+            .populate("manufacturer");
         products = await products;
         res.json(products);
     } catch (err) {
