@@ -9,6 +9,7 @@ import Dev from "./routes/dev/Dev";
 import AdminDashboard from "./routes/Admin/Dashboard";
 import AdminUser from "./routes/Admin/User";
 import AdminCategory from "./routes/Admin/Category";
+import AdminManufacturer from "./routes/Admin/Manufacturer";
 import AdminProduct from "./routes/Admin/Product";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -18,10 +19,11 @@ import {
     faPlus,
     faSpinner,
     faUser,
+    faIndustry,
 } from "@fortawesome/free-solid-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
 
-library.add(faUser, faSpinner, faList, faBoxOpen, faPlus, faChevronDown);
+library.add(faUser, faSpinner, faList, faBoxOpen, faPlus, faChevronDown, faIndustry);
 
 function App() {
     return (
@@ -39,6 +41,7 @@ function App() {
                     <Route index element={<AdminDashboard />} />
                     <Route path="user" element={<AdminUser />} />
                     <Route path="category" element={<AdminCategory />} />
+                    <Route path="manufacturer" element={<AdminManufacturer />} />
                     <Route path="product" element={<AdminProduct />} />
                 </Route>
             </Routes>

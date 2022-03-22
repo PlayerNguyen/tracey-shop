@@ -4,7 +4,7 @@
 
 @layer components {
     .input {
-        @apply ring-1 ring-gray-200 focus:outline-0 focus:ring-2 focus:ring-gray-400 rounded p-1;
+        @apply border border-gray-200 focus:outline-0 focus:border-2 focus:border-gray-400 rounded p-1;
     }
 }
 
@@ -25,4 +25,8 @@ td {
     text-align: left;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+}
+
+.slick-arrow::before {
+    color: black !important;
 }

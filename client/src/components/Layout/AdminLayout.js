@@ -59,6 +59,11 @@ function AdminLayout() {
             icon: "list",
         },
         {
+            name: "Nhà sản xuất",
+            path: "/dashboard/manufacturer",
+            icon: "industry",
+        },
+        {
             name: "Sản phẩm",
             path: "/dashboard/product",
             icon: "box-open",
@@ -91,7 +96,7 @@ function AdminLayout() {
                                 </span>
                             </Link>
                         </div>
-                        <div className="ring-2 ring-white rounded p-2">
+                        <div className="border-2 border-white rounded p-2">
                             {menu.map((_item, _idx) => (
                                 <MenuItem
                                     key={_idx}

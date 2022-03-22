@@ -5,11 +5,10 @@ import { Modal } from "../../../components";
 import { classNames, getImageUrl } from "../../../helpers/Common";
 import { v4 as uuidv4 } from "uuid";
 import resourceApi from "../../../requests/ResourceRequest";
-import productApi from "../../../requests/ProductRequest";
 import UploadSingleImg from "./upload-single-img";
 import Select from "react-select";
 
-function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
+function UpdateProduct({ open, onClose, onSave, updateProduct, categories, manufacturers }) {
     const [product, setProduct] = React.useState({
         name: "",
         description: "",
@@ -29,6 +28,11 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
         value: _category._id,
     }));
 
+    const manufacturerOptions = manufacturers.map((_manufacturer) => ({
+        label: _manufacturer.name,
+        value: _manufacturer._id,
+    }));
+
     React.useEffect(() => {
         if (updateProduct) {
             setProduct({
@@ -41,6 +45,10 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
                 category: updateProduct.category._id,
                 categoryOption: categoryOptions.find(
                     (_option) => _option.value === updateProduct.category._id
+                ),
+                manufacturer: updateProduct.manufacturer._id,
+                manufacturerOption: manufacturerOptions.find(
+                    (_option) => _option.value === updateProduct.manufacturer._id
                 ),
                 thumbnail: updateProduct.thumbnail._id,
                 thumbnailImg: updateProduct.thumbnail.fileName,
@@ -197,6 +205,14 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
         });
     };
 
+    const handleChangeManufacturer = (selectedOption) => {
+        setProduct({
+            ...product,
+            manufacturer: selectedOption.value,
+            manufacturerOption: selectedOption,
+        });
+    };
+
     return (
         <>
             <Modal dimmer open={open} onClose={onClose}>
@@ -267,7 +283,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
                         </div>
                     </div>
                     <div className="grid grid-cols-4 gap-8">
-                        <div>
+                        <div className="col-span-2">
                             <label>Tên sản phẩm</label>
                             <input
                                 className="input w-full"
@@ -291,12 +307,22 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
                                 onChange={(e) => handleChangeProduct("sale", e.target.value)}
                             />
                         </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-8">
                         <div>
                             <label>Danh mục</label>
                             <Select
                                 value={product.categoryOption}
                                 options={categoryOptions}
                                 onChange={handleChangeCategory}
+                            />
+                        </div>
+                        <div>
+                            <label>Nhà sản xuất</label>
+                            <Select
+                                value={product.manufacturerOption}
+                                options={manufacturerOptions}
+                                onChange={handleChangeManufacturer}
                             />
                         </div>
                     </div>
@@ -362,7 +388,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
                             onClick={handleSave}
                             className={classNames(
                                 !loading && "hover:bg-indigo-400 hover:text-white",
-                                "ring-2 ring-indigo-400 text-indigo-400 font-semibold py-2 px-4 rounded-full mr-2"
+                                "border-2 border-indigo-400 text-indigo-400 font-semibold py-2 px-4 rounded-full mr-2"
                             )}
                             disabled={loading}
                         >
@@ -370,7 +396,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories }) {
                         </button>
                         <button
                             onClick={onClose}
-                            className="ring-2 ring-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white font-semibold py-2 px-4 rounded-full ml-2"
+                            className="border-2 border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white font-semibold py-2 px-4 rounded-full ml-2"
                         >
                             Đóng
                         </button>

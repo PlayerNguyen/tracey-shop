@@ -138,7 +138,7 @@ function UpdateCategory({ open, onClose, onSave, updateCategory }) {
                             onClick={handleSave}
                             className={classNames(
                                 !loading && "hover:bg-indigo-400 hover:text-white",
-                                "ring-2 ring-indigo-400 text-indigo-400 font-semibold py-2 px-4 rounded-full mr-2"
+                                "border-2 border-indigo-400 text-indigo-400 font-semibold py-2 px-4 rounded-full mr-2"
                             )}
                             disabled={loading}
                         >
@@ -146,7 +146,7 @@ function UpdateCategory({ open, onClose, onSave, updateCategory }) {
                         </button>
                         <button
                             onClick={onClose}
-                            className="ring-2 ring-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white font-semibold py-2 px-4 rounded-full ml-2"
+                            className="border-2 border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white font-semibold py-2 px-4 rounded-full ml-2"
                         >
                             Đóng
                         </button>

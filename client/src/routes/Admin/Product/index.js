@@ -1,15 +1,17 @@
 import React from "react";
 import productApi from "../../../requests/ProductRequest";
 import categoryApi from "../../../requests/CategoryRequest";
+import manufacturerApi from "../../../requests/ManufacturerRequest";
 import UpdateProduct from "./update";
 import { v1 as uuidv1 } from "uuid";
 import { toast } from "react-toastify";
 import { ConfirmModal } from "../../../components";
-import { getImageUrl } from "../../../helpers/Common";
+import { formatVndCurrency, getImageUrl } from "../../../helpers/Common";
 
 function Products() {
     const [products, setProducts] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
+    const [manufacturers, setManufacturers] = React.useState([]);
     const [updateModal, setUpdateModal] = React.useState(false);
     const [updateProduct, setUpdateProduct] = React.useState(null);
     const [randomKey, setRandomKey] = React.useState(0);
@@ -39,9 +41,19 @@ function Products() {
         }
     };
 
+    const fetchManufacturers = async () => {
+        try {
+            const resp = await manufacturerApi.getAllManufacturer();
+            setManufacturers(resp.data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     React.useEffect(() => {
         fetchProducts();
         fetchCategories();
+        fetchManufacturers();
     }, []);
 
     const handleOpenUpdateModal = (selectedProduct = null) => {
@@ -118,6 +130,7 @@ function Products() {
                             <th>Giá tiền</th>
                             <th>Giá khuyến mãi</th>
                             <th>Danh mục</th>
+                            <th>Hãng sản xuất</th>
                             <th>Tác vụ</th>
                         </tr>
                     </thead>
@@ -132,9 +145,10 @@ function Products() {
                                     />
                                 </td>
                                 <td className="py-2">{_product.name}</td>
-                                <td className="py-2">{_product.price}</td>
-                                <td className="py-2">{_product.sale}</td>
+                                <td className="py-2">{formatVndCurrency(_product.price)}</td>
+                                <td className="py-2">{formatVndCurrency(_product.sale)}</td>
                                 <td className="py-2">{_product.category.name}</td>
+                                <td className="py-2">{_product.manufacturer.name}</td>
                                 <td className="py-2 divide-x">
                                     <button
                                         className="bg-transparent hover:underline hover:text-indigo-500 px-2 py-1"
@@ -161,6 +175,7 @@ function Products() {
                 onSave={handleSave}
                 updateProduct={updateProduct}
                 categories={categories}
+                manufacturers={manufacturers}
             />
             <ConfirmModal {...confirmModal} />
         </>
