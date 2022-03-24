@@ -123,7 +123,8 @@ async function getProductById(req, res, next) {
         const product = await ProductModel.findOne({ _id: id })
             .populate("category")
             .populate("images")
-            .populate("thumbnail");
+            .populate("thumbnail")
+            .populate("manufacturer")
 
         // Product not found
         if (!product) {

@@ -2,8 +2,9 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import productApi from "../../requests/ProductRequest";
-import { getImageUrl } from "../../helpers/Common";
+import { formatVndCurrency, getImageUrl } from "../../helpers/Common";
 import Slider from "react-slick";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ProductDetail(props) {
     const [loading, setLoading] = React.useState(true);
@@ -34,7 +35,7 @@ function ProductDetail(props) {
 
     const switchCarousel = (idx) => {
         carouselRef.current.slickGoTo(idx);
-    }
+    };
 
     return (
         <>
@@ -50,9 +51,9 @@ function ProductDetail(props) {
                         </Link>{" "}
                         / <span className="font-semibold">{product.name}</span>
                     </div>
-                    <div className="bg-white rounded-xl">
-                        <div className="text-xl font-semibold p-4">{product.name}</div>
-                        <div className="grid grid-cols-5 gap-8 p-4">
+                    <div className="bg-white rounded-xl p-4">
+                        <div className="text-3xl font-semibold border-b pb-4">{product.name}</div>
+                        <div className="grid grid-cols-5 gap-8 pt-4">
                             <div className="col-span-4">
                                 <div className="grid grid-cols-11 gap-8">
                                     <div className="col-span-4 p-8">
@@ -77,7 +78,11 @@ function ProductDetail(props) {
                                         </Slider>
                                         <div className="grid grid-cols-5 gap-2">
                                             {product.images.map((_img, _idx) => (
-                                                <div className="border border-gray-400 cursor-pointer hover:border-2" key={_img._id} onClick={() => switchCarousel(_idx)}>
+                                                <div
+                                                    className="border border-gray-400 cursor-pointer hover:border-2"
+                                                    key={_img._id}
+                                                    onClick={() => switchCarousel(_idx)}
+                                                >
                                                     <img
                                                         className="w-full"
                                                         src={getImageUrl(_img.fileName)}
@@ -87,7 +92,102 @@ function ProductDetail(props) {
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="col-span-7">Test</div>
+                                    <div className="col-span-7">
+                                        <div className="flex divide-x">
+                                            <div className="pr-4">
+                                                Đánh giá:{" "}
+                                                <FontAwesomeIcon
+                                                    className="text-yellow-500"
+                                                    icon={["fas", "star"]}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="text-yellow-500"
+                                                    icon={["fas", "star"]}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="text-yellow-500"
+                                                    icon={["fas", "star"]}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="text-yellow-500"
+                                                    icon={["fas", "star"]}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="text-yellow-500"
+                                                    icon={["far", "star"]}
+                                                />
+                                            </div>
+                                            <div className="px-4">Bình luận: 0</div>
+                                            <div className="pl-4">Lượt xem: 0</div>
+                                        </div>
+                                        <div className="my-4">
+                                            <div>
+                                                <label className="font-semibold">Giới thiệu</label>
+                                            </div>
+                                            <pre>{product.description}</pre>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <label className="font-semibold">
+                                                    Thông số sản phẩm
+                                                </label>
+                                            </div>
+                                            <div className="h-72 overflow-auto">
+                                                <table className="border w-full">
+                                                    <tbody>
+                                                        <tr className="odd:bg-gray-100">
+                                                            <td className="w-px whitespace-nowrap px-4 border-r">
+                                                                Hãng sản xuất
+                                                            </td>
+                                                            <td className="px-4">
+                                                                {product.manufacturer.name}
+                                                            </td>
+                                                        </tr>
+                                                        {product.properties.map(
+                                                            (_property, _idx) => (
+                                                                <tr
+                                                                    className="odd:bg-gray-100"
+                                                                    key={_idx}
+                                                                >
+                                                                    <td className="w-px whitespace-nowrap px-4 border-r">
+                                                                        {_property.key}
+                                                                    </td>
+                                                                    <td className="px-4">
+                                                                        {_property.value}
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div className="border border-gray-400 border-dotted py-8 px-4 rounded-lg">
+                                            <div>
+                                                <span className="text-red-700 text-3xl font-bold">
+                                                    {formatVndCurrency(
+                                                        product.sale || product.price
+                                                    )}
+                                                </span>
+                                                {product.sale && (
+                                                    <>
+                                                        <span className="text-gray-800 line-through mx-4">
+                                                            {formatVndCurrency(product.price)}
+                                                        </span>
+                                                        <span>
+                                                            Tiết kiệm{" "}
+                                                            {formatVndCurrency(
+                                                                product.price - product.sale
+                                                            )}
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
+                                            <button className="bg-gray-200 font-semibold p-2 mt-8">
+                                                Giá đã có VAT
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div>

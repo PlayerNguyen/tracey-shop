@@ -20,10 +20,22 @@ import {
     faSpinner,
     faUser,
     faIndustry,
+    faStar,
 } from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
 
-library.add(faUser, faSpinner, faList, faBoxOpen, faPlus, faChevronDown, faIndustry);
+library.add(
+    faUser,
+    faSpinner,
+    faList,
+    faBoxOpen,
+    faPlus,
+    faChevronDown,
+    faIndustry,
+    faStar,
+    faStarRegular
+);
 
 function App() {
     return (
