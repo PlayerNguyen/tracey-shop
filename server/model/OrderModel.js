@@ -34,6 +34,10 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         default: 1,
       },
+      warrantyDue: {
+        type: Date,
+        // required: true,
+      },
       _id: false,
     },
   ],
@@ -66,6 +70,17 @@ OrderSchema.pre("save", async function (next) {
       return next(new Error("Product not found"));
     }
     totalPrice += product.price * products[i].quantity;
+  }
+
+  for (let i = 0; i < products.length; i++) {
+    const product = await ProductModel.findById(products[i].product);
+    if (!product) {
+      return next(new Error("Product not found"));
+    }
+    const currentDate = this.createdAt;
+    currentDate.setMonth(currentDate.getMonth() + product.warrantyDuration);
+
+    products[i].warrantyDue = currentDate;
   }
 
   this.totalPrice = totalPrice;

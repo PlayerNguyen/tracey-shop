@@ -18,6 +18,7 @@ async function createProduct(req, res, next) {
       category,
       properties,
       stock,
+      warrantyDuration,
     } = req.body;
 
     const product = await ProductModel.create({
@@ -30,6 +31,7 @@ async function createProduct(req, res, next) {
       category,
       properties,
       stock,
+      warrantyDuration,
     });
     res.json(product);
   } catch (err) {
@@ -60,6 +62,7 @@ async function updateProduct(req, res, next) {
       properties,
       manufacturer,
       stock,
+      warrantyDuration,
     } = req.body;
 
     const product = await ProductModel.findByIdAndUpdate(id, {
@@ -73,6 +76,7 @@ async function updateProduct(req, res, next) {
       properties,
       manufacturer,
       stock,
+      warrantyDuration,
     });
 
     res.json(product);
