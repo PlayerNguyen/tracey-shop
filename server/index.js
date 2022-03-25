@@ -27,6 +27,7 @@ app.use(`/resources`, require(`./routes/ImageResource/ImageResourceRouter`));
 app.use(`/category`, require(`./routes/Category/CategoryRouter`));
 app.use(`/manufacturer`, require(`./routes/Manufacturer/ManufacturerRouter`));
 app.use(`/orders`, require(`./routes/Order/OrderRouter`));
+app.use(`/reviews`, require(`./routes/Review/ReviewRouter`));
 /**
  * Image Serve
  */

@@ -12,7 +12,7 @@ const Language = {
     PrototypeExisted: "Prototype existed",
     ProductNotFound: "Product not found",
     BadRequest: "Bad request",
-    
+    AlreadyReview: "Already reviewed",
   },
 };
 
