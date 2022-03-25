@@ -11,6 +11,8 @@ const Language = {
     FileNotImage: "File is not an image",
     PrototypeExisted: "Prototype existed",
     ProductNotFound: "Product not found",
+    BadRequest: "Bad request",
+    
   },
 };
 
