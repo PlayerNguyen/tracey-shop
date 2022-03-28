@@ -14,4 +14,14 @@ router.get(
   ReviewController.getReviewById
 );
 
+router.put(
+  `/:reviewId`,
+  AuthMiddleware.forciblyRequireAuth,
+  ReviewController.updateReview
+);
+router.delete(
+  `/:reviewId`,
+  AuthMiddleware.forciblyRequireAuth,
+  ReviewController.deleteReview
+);
 module.exports = router;

@@ -1,5 +1,6 @@
 const express = require("express");
 const ProductController = require("../../controller/ProductController");
+const AuthMiddleware = require("../../utils/AuthMiddleware");
 const router = express.Router();
 
 /**
@@ -7,21 +8,33 @@ const router = express.Router();
  * <br/>
  * Creates a new product
  */
-router.post(`/`, ProductController.createProduct);
+router.post(
+  `/`,
+  AuthMiddleware.forciblyRequireAuth,
+  ProductController.createProduct
+);
 
 /**
  * PUT /products/:id
  * <br/>
  * Updates a product
  */
-router.put(`/:id`, ProductController.updateProduct);
+router.put(
+  `/:id`,
+  AuthMiddleware.forciblyRequireAuth,
+  ProductController.updateProduct
+);
 
 /**
  * DELETE /products/:id
  * <br/>
  * Deletes a product
  */
-router.delete(`/:id`, ProductController.deleteProduct);
+router.delete(
+  `/:id`,
+  AuthMiddleware.forciblyRequireAuth,
+  ProductController.deleteProduct
+);
 
 /**
  * GET /products/
@@ -36,5 +49,34 @@ router.get(`/`, ProductController.getAllProducts);
  *  Retrieves a product by its id
  */
 router.get(`/:id`, ProductController.getProductById);
-
+/**
+ * POST /products/:id/comments
+ * <br/>
+ * Adds a comment to a product
+ */
+router.post(
+  `/:id/comments`,
+  AuthMiddleware.forciblyRequireAuth,
+  ProductController.createComment
+);
+/**
+ * PUT /products/:id/comments/:commentId
+ * <br/>
+ * Updates a comment
+ */
+router.put(
+  `/:productId/comments/:commentId`,
+  AuthMiddleware.forciblyRequireAuth,
+  ProductController.updateComment
+);
+/**
+ * DELETE /products/:id/comments/:commentId
+ * <br/>
+ *  Deletes a comment
+ */
+router.delete(
+  `/:productId/comments/:commentId`,
+  AuthMiddleware.forciblyRequireAuth,
+  ProductController.deleteComment
+);
 module.exports = router;
