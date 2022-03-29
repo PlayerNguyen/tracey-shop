@@ -132,7 +132,8 @@ async function getAllProducts(req, res, next) {
       .populate("category")
       .populate("images")
       .populate("thumbnail")
-      .populate("manufacturer");
+      .populate("manufacturer")
+      .populate("comments.user", { password: false });
     products = await products;
     res.json(products);
   } catch (err) {
@@ -149,7 +150,8 @@ async function getProductById(req, res, next) {
       .populate("category")
       .populate("images")
       .populate("thumbnail")
-      .populate("manufacturer");
+      .populate("manufacturer")
+      .populate("comments.user", { password: false });
 
     // Product not found
     if (!product) {
@@ -162,11 +164,101 @@ async function getProductById(req, res, next) {
   }
 }
 
+async function createComment(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+    const user = req.userData;
+    // console.log(req.userData);
+
+    if (!user) {
+      throw new MiddlewareError(401, Language.Response.Unauthorized);
+    }
+
+    const product = await ProductModel.findOne({ _id: id });
+    if (!product) {
+      throw new MiddlewareError(404, Language.Response.ProductNotFound);
+    }
+
+    // const comment = await CommentModel.create({
+    //   content,
+    //   product: id,
+    // });
+    const comment = { content, user: user._id };
+    product.comments.push(comment);
+    await product.save();
+    res.json(product);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function updateComment(req, res, next) {
+  try {
+    const { productId, commentId } = req.params;
+    const { content } = req.body;
+
+    const currentProduct = ProductModel.findOne({ _id: productId });
+    // Retrieves current product
+    if (!currentProduct) {
+      throw new MiddlewareError(404, Language.Response.ProductNotFound);
+    }
+
+    const user = req.userData;
+    // Validates user
+    if (user._id != currentProduct._id && !user.admin) {
+      throw new MiddlewareError(401, Language.Response.Unauthorized);
+    }
+
+    // Updates product
+    const updatedProduct = ProductModel.findOneAndUpdate(
+      { "product.comments._id": commentId },
+      { content }
+    );
+
+    // Responses to user
+    res.json(updatedProduct);
+  } catch (err) {
+    return next(err);
+  }
+}
+
+async function deleteComment(req, res, next) {
+  try {
+    const { productId, commentId } = req.params;
+    const currentProduct = await ProductModel.findOne({ _id: productId });
+    // validates product
+    if (!currentProduct) {
+      throw new MiddlewareError(404, Language.Response.ProductNotFound);
+    }
+
+    const user = req.userData;
+    // validates user
+    if (user._id != currentProduct._id && !user.admin) {
+      throw new MiddlewareError(401, Language.Response.Unauthorized);
+    }
+
+    // deletes comment
+    const deletedComment = await ProductModel.findOneAndUpdate(
+      { _id: productId },
+      { $pull: { comments: { _id: commentId } } }
+    );
+
+    // responds to user
+    res.json({ deletedComment });
+  } catch (err) {
+    return next(err);
+  }
+}
+
 const ProductController = {
   createProduct,
   updateProduct,
   deleteProduct,
   getAllProducts,
   getProductById,
+  createComment,
+  updateComment,
+  deleteComment,
 };
 module.exports = ProductController;
