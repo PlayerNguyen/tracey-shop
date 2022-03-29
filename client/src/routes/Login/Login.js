@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import * as authActions from "../../stores/authReducer";
 import { Navbar } from "../../components";
 import UserRequest from "../../requests/UserRequest";
 import { AlertTriangle } from "react-feather";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
 
     const [error, setError] = useState(null);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault(true);
@@ -19,7 +24,9 @@ const Login = () => {
         UserRequest.createSignInRequest(phone, password)
             .then((response) => {
                 localStorage.setItem("token", response.data.token);
-                window.location.href = "/";
+                toast.success("Đăng nhập thành công.");
+                dispatch(authActions.setAuthenticated(true));
+                navigate("/");
             })
             .catch((error) => {
                 console.log(`err: `, error.response.data);

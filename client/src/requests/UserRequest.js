@@ -20,8 +20,11 @@ async function getAllUser() {
 }
 
 async function createSignUpRequest(phone, name, password, email) {
-    console.log({ phone, password, name, email });
     return AxiosHelper.post("/users/register", { phone, password, name, email });
+}
+
+async function getProfile() {
+    return AxiosHelper.get("/users/me");
 }
 
 const UserRequest = {
@@ -29,5 +32,6 @@ const UserRequest = {
     createUserByAdmin,
     getAllUser,
     createSignUpRequest,
+    getProfile,
 };
 export default UserRequest;
