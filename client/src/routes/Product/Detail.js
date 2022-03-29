@@ -5,15 +5,16 @@ import productApi from "../../requests/ProductRequest";
 import { formatVndCurrency, getImageUrl } from "../../helpers/Common";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ProductItem } from "../../components";
 
 function ProductDetail(props) {
     const [loading, setLoading] = React.useState(true);
     const [product, setProduct] = React.useState(null);
+    const [suggestProducts, setSuggestProducts] = React.useState([]);
     const params = useParams();
     const carouselRef = React.useRef(null);
 
-    const fetchProduct = async (url) => {
-        const id = url.split("-").reverse()[0];
+    const fetchProduct = async (id) => {
         try {
             setLoading(true);
             const resp = await productApi.getProductById(id);
@@ -29,9 +30,29 @@ function ProductDetail(props) {
         }
     };
 
+    const fetchSuggestProduct = async (_product) => {
+        try {
+            const resp = await productApi.getProductByCategory(_product.category.slug);
+            setSuggestProducts(resp.data.filter((_item) => _item._id !== _product._id).slice(0, 5));
+        } catch (e) {
+            toast.error(
+                e.response?.data?.error?.message ||
+                    "Lấy thông tin sản phẩm thất bại! Vui lòng thử lại sau."
+            );
+            console.error(e);
+        }
+    };
+
     React.useEffect(() => {
-        fetchProduct(params.product);
+        const idProduct = params.product.split("-").reverse()[0];
+        fetchProduct(idProduct);
     }, [params]);
+
+    React.useEffect(() => {
+        if (product) {
+            fetchSuggestProduct(product);
+        }
+    }, [product]);
 
     const switchCarousel = (idx) => {
         carouselRef.current.slickGoTo(idx);
@@ -51,7 +72,7 @@ function ProductDetail(props) {
                         </Link>{" "}
                         / <span className="font-semibold">{product.name}</span>
                     </div>
-                    <div className="bg-white rounded-xl p-4">
+                    <div className="bg-white rounded-xl p-4 my-4">
                         <div className="text-3xl font-semibold border-b pb-4">{product.name}</div>
                         <div className="grid grid-cols-5 gap-8 pt-4">
                             <div className="col-span-4">
@@ -171,7 +192,7 @@ function ProductDetail(props) {
                                                 </span>
                                                 {product.sale && (
                                                     <>
-                                                        <span className="text-gray-800 line-through mx-4">
+                                                        <span className="text-gray-800 line-through mx-2">
                                                             {formatVndCurrency(product.price)}
                                                         </span>
                                                         <span>
@@ -183,10 +204,19 @@ function ProductDetail(props) {
                                                     </>
                                                 )}
                                             </div>
-                                            <button className="bg-gray-200 font-semibold p-2 mt-8">
-                                                Giá đã có VAT
-                                            </button>
+                                            <div>
+                                                <button className="bg-gray-200 font-semibold p-2 mt-8 mr-2">
+                                                    Giá đã có VAT
+                                                </button>
+                                                <button className="bg-gray-200 font-semibold p-2 mt-8 ml-2">
+                                                    Bảo hành {product.warrantyDuration} tháng
+                                                </button>
+                                            </div>
                                         </div>
+                                        <button className="bg-red-600 rounded-lg mt-4 w-full p-4 text-white">
+                                            <div className="font-bold text-xl">ĐẶT MUA NGAY</div>
+                                            <div>Giao hàng tận nơi nhanh chóng</div>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -221,6 +251,17 @@ function ProductDetail(props) {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    {suggestProducts.length > 0 && (
+                        <div className="bg-white rounded-xl px-4 py-2">
+                            <div className="text-xl font-semibold">Bạn có thể thích</div>
+                            {suggestProducts.map((_product) => (
+                                <ProductItem product={_product} key={_product._id} />
+                            ))}
+                        </div>
+                    )}
+                    <div className="bg-white rounded-xl px-4 py-2 col-span-4">
+                        <div className="text-xl font-semibold">Đánh giá sản phẩm</div>
                     </div>
                 </>
             )}
