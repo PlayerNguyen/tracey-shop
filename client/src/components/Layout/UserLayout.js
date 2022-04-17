@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import Footer from "../Footer";
 import Navbar from "../Navbar/Navbar";
 
 function UserLayout() {
@@ -16,6 +17,9 @@ function UserLayout() {
                     <div className="col-start-2 col-span-10">
                         <Outlet />
                     </div>
+                </div>
+                <div>
+                    <Footer />
                 </div>
             </div>
         </>
