@@ -164,6 +164,14 @@ function ProductDetail(props) {
                                                                 {product.manufacturer.name}
                                                             </td>
                                                         </tr>
+                                                        <tr className="odd:bg-gray-100">
+                                                            <td className="w-px whitespace-nowrap px-4 border-r">
+                                                                Thời gian bảo hành
+                                                            </td>
+                                                            <td className="px-4">
+                                                                {product.warrantyDuration} tháng
+                                                            </td>
+                                                        </tr>
                                                         {product.properties.map(
                                                             (_property, _idx) => (
                                                                 <tr

@@ -20,6 +20,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories, manuf
         category: null,
         categoryOption: null,
         properties: [],
+        warrantyDuration: 0,
     });
     const [loading, setLoading] = React.useState(false);
 
@@ -308,7 +309,7 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories, manuf
                             />
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-3 gap-8">
                         <div>
                             <label>Danh mục</label>
                             <Select
@@ -323,6 +324,14 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories, manuf
                                 value={product.manufacturerOption}
                                 options={manufacturerOptions}
                                 onChange={handleChangeManufacturer}
+                            />
+                        </div>
+                        <div>
+                            <label>Thời gian bảo hành (tháng)</label>
+                            <input
+                                className="input w-full"
+                                value={product.warrantyDuration}
+                                onChange={(e) => handleChangeProduct("warrantyDuration", e.target.value)}
                             />
                         </div>
                     </div>

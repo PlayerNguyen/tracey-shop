@@ -14,7 +14,7 @@ function Footer() {
                         className="input w-96 rounded-none"
                         placeholder="Nhập email hoặc số điện thoại của bạn"
                     />
-                    <div className="px-8 font-semibold bg-red-800 flex items-center cursor-pointer">
+                    <div className="px-8 font-semibold bg-red-600 flex items-center cursor-pointer">
                         <span>Gửi</span>
                     </div>
                 </div>

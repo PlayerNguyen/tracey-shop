@@ -21,6 +21,8 @@ import {
     faUser,
     faIndustry,
     faStar,
+    faCheck,
+    faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
@@ -34,7 +36,9 @@ library.add(
     faChevronDown,
     faIndustry,
     faStar,
-    faStarRegular
+    faStarRegular,
+    faCheck,
+    faPhone
 );
 
 function App() {
