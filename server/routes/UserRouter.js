@@ -136,6 +136,15 @@ router.get(`/me`, AuthMiddleware.forciblyRequireAuth, (req, res, next) => {
     res.json({ data: req.userData });
 });
 
+router.put("/me", AuthMiddleware.forciblyRequireAuth, (req, res, next) => {
+    const { name, email, address } = req.body;
+    UserController.updateUser(req.userData._id, { name, email, address })
+        .then((user) => {
+            res.json({ data: user });
+        })
+        .catch(next);
+});
+
 /**
  * Change the password of the user. Please notice that confirm the new password in the frontend.
  * @param {*} oldPassword the old password
