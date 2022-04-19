@@ -133,7 +133,7 @@ router.post(
  * Get user information.
  */
 router.get(`/me`, AuthMiddleware.forciblyRequireAuth, (req, res, next) => {
-    res.json({ data: req.userData });
+    res.json(req.userData);
 });
 
 router.put("/me", AuthMiddleware.forciblyRequireAuth, (req, res, next) => {

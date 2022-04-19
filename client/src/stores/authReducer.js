@@ -6,10 +6,11 @@ const initialState = {
     isAuthenticated: false,
     profile: {
         info: {
-            username: "",
             phone: "",
-            email: "",
-            password: "",
+            name: "",
+            admin: false,
+            _id: "",
+            address: "",
         },
         modal: false,
         loading: false,
@@ -50,13 +51,14 @@ export const {
 function getProfile() {
     return async (dispatch) => {
         const profileResp = await userApi.getProfile();
-        const { username, nickname, introduction, email } = profileResp.data;
+        const { phone, name, admin, _id, address } = profileResp.data;
         dispatch(
             setProfileInfo({
-                username,
-                nickname: nickname || "",
-                introduction: introduction || "",
-                email: email || "",
+                phone,
+                name,
+                admin,
+                _id,
+                address,
             })
         );
     };

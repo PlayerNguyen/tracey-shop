@@ -47,6 +47,29 @@ async function deleteProduct(id) {
     });
 }
 
+async function getProductReview(id) {
+    return AxiosHelper({
+        url: `/reviews/${id}`,
+        method: "GET",
+    });
+}
+
+async function createProductReview(product) {
+    return AxiosHelper({
+        url: `/reviews`,
+        method: "POST",
+        data: product,
+    });
+}
+
+async function createProductComment(productId, comment) {
+    return AxiosHelper({
+        url: `/products/${productId}/comments`,
+        method: "POST",
+        data: comment,
+    });
+}
+
 const ProductRequest = {
     getAllProduct,
     getProductByCategory,
@@ -54,5 +77,8 @@ const ProductRequest = {
     createProduct,
     updateProduct,
     deleteProduct,
+    getProductReview,
+    createProductReview,
+    createProductComment,
 };
 export default ProductRequest;

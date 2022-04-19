@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./routes/Home/Home";
@@ -26,6 +27,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
+import { useDispatch } from "react-redux";
+import { checkTokenValid } from "./helpers/Common";
+import * as authActions from "./stores/authReducer";
 
 library.add(
     faUser,
@@ -42,6 +46,20 @@ library.add(
 );
 
 function App() {
+    const dispatch = useDispatch();
+
+    const fetchProfile = async () => {
+        const tokenValid = checkTokenValid();
+        dispatch(authActions.setAuthenticated(tokenValid));
+        if (tokenValid) {
+            dispatch(authActions.getProfile());
+        }
+    };
+
+    React.useEffect(() => {
+        fetchProfile();
+    }, []);
+    
     return (
         <div className="app">
             <Routes>

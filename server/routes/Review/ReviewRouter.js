@@ -10,7 +10,6 @@ router.post(
 );
 router.get(
   `/:productId`,
-  AuthMiddleware.forciblyRequireAuth,
   ReviewController.getReviewById
 );
 

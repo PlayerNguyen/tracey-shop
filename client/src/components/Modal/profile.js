@@ -48,7 +48,7 @@ function Profile() {
                                 onChange={handleChangeUserInfo("name")}
                             />
                         </div>
-                        <div>
+                        <div className="col-span-2">
                             <label>Email</label>
                             <input
                                 className="input w-full"

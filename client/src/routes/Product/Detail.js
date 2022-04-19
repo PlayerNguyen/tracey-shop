@@ -2,23 +2,64 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import productApi from "../../requests/ProductRequest";
-import { formatVndCurrency, getImageUrl } from "../../helpers/Common";
+import { classNames, formatVndCurrency, getImageUrl } from "../../helpers/Common";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProductItem } from "../../components";
+import { useSelector } from "react-redux";
+import ReviewSection from "./ReviewSection";
+import CommentSection from "./CommentSection";
 
 function ProductDetail(props) {
+    const SECTION = {
+        REVIEW: "review",
+        COMMENT: "comment",
+    };
+    const MAX_RATING = 5;
     const [loading, setLoading] = React.useState(true);
     const [product, setProduct] = React.useState(null);
+    const [activeSection, setActiveSection] = React.useState(SECTION.REVIEW);
     const [suggestProducts, setSuggestProducts] = React.useState([]);
+    const {
+        profile: { info: user },
+    } = useSelector((state) => state.auth);
     const params = useParams();
     const carouselRef = React.useRef(null);
+    const [ratingIcons, setRatingIcons] = React.useState([]);
+
+    const avgRating = React.useMemo(() => {
+        if (product) {
+            let _avgRating = (
+                product.reviews.reduce((rating, review) => (rating += review.rating), 0) /
+                    product.reviews.length || 0
+            ).toFixed(2);
+            let stars = _avgRating;
+            const _ratingIcons = [];
+            while (stars >= 1) {
+                stars -= 1;
+                _ratingIcons.push("fa-star");
+            }
+            while (stars >= 0.5) {
+                stars -= 0.5;
+                _ratingIcons.push("fa-star-half-alt");
+            }
+            for (let i = 0; i < MAX_RATING - Math.round(_avgRating); i++) {
+                _ratingIcons.push("far fa-star");
+            }
+            setRatingIcons(_ratingIcons);
+            return _avgRating;
+        }
+        return 0;
+    }, [product]);
 
     const fetchProduct = async (id) => {
         try {
             setLoading(true);
-            const resp = await productApi.getProductById(id);
-            setProduct(resp.data);
+            const productResp = await productApi.getProductById(id);
+            const _product = productResp.data;
+            const reviewsResp = await productApi.getProductReview(_product._id);
+            _product.reviews = reviewsResp.data;
+            setProduct(_product);
         } catch (e) {
             toast.error(
                 e.response?.data?.error?.message ||
@@ -53,6 +94,12 @@ function ProductDetail(props) {
             fetchSuggestProduct(product);
         }
     }, [product]);
+
+    React.useEffect(() => {
+        if (product) {
+            document.title = `${product.name}`;
+        }
+    }, [product, user]);
 
     const switchCarousel = (idx) => {
         carouselRef.current.slickGoTo(idx);
@@ -117,28 +164,16 @@ function ProductDetail(props) {
                                         <div className="flex divide-x">
                                             <div className="pr-4">
                                                 Đánh giá:{" "}
-                                                <FontAwesomeIcon
-                                                    className="text-yellow-500"
-                                                    icon={["fas", "star"]}
-                                                />
-                                                <FontAwesomeIcon
-                                                    className="text-yellow-500"
-                                                    icon={["fas", "star"]}
-                                                />
-                                                <FontAwesomeIcon
-                                                    className="text-yellow-500"
-                                                    icon={["fas", "star"]}
-                                                />
-                                                <FontAwesomeIcon
-                                                    className="text-yellow-500"
-                                                    icon={["fas", "star"]}
-                                                />
-                                                <FontAwesomeIcon
-                                                    className="text-yellow-500"
-                                                    icon={["far", "star"]}
-                                                />
+                                                {ratingIcons.map((_icon, _idx) => (
+                                                    <FontAwesomeIcon
+                                                        className="text-yellow-400"
+                                                        icon={_icon}
+                                                        key={_idx}
+                                                    />
+                                                ))}{" "}
+                                                {avgRating}
                                             </div>
-                                            <div className="px-4">Bình luận: 0</div>
+                                            <div className="px-4">Bình luận: {product.comments.length}</div>
                                             <div className="pl-4">Lượt xem: 0</div>
                                         </div>
                                         <div className="my-4">
@@ -269,7 +304,28 @@ function ProductDetail(props) {
                         </div>
                     )}
                     <div className="bg-white rounded-xl px-4 py-2 col-span-4">
-                        <div className="text-xl font-semibold">Đánh giá sản phẩm</div>
+                        <div className="flex">
+                            <div
+                                className={classNames(
+                                    "text-xl font-semibold mr-8 cursor-pointer hover:bg-gray-200 rounded-md p-2",
+                                    activeSection === SECTION.REVIEW && "bg-gray-200"
+                                )}
+                                onClick={() => setActiveSection(SECTION.REVIEW)}
+                            >
+                                Đánh giá sản phẩm
+                            </div>
+                            <div
+                                className={classNames(
+                                    "text-xl font-semibold mr-8 cursor-pointer hover:bg-gray-200 rounded-md p-2",
+                                    activeSection === SECTION.COMMENT && "bg-gray-200"
+                                )}
+                                onClick={() => setActiveSection(SECTION.COMMENT)}
+                            >
+                                Bình luận
+                            </div>
+                        </div>
+                        {activeSection === SECTION.REVIEW && <ReviewSection product={product} />}
+                        {activeSection === SECTION.COMMENT && <CommentSection product={product} />}
                     </div>
                 </>
             )}
