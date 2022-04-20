@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./routes/Home/Home";
 import Product from "./routes/Product/List";
 import ProductDetail from "./routes/Product/Detail";
+import Cart from "./routes/Cart";
 import Login from "./routes/Login/Login";
 import Signup from "./routes/SignUp/SignUp";
 import Dev from "./routes/dev/Dev";
@@ -67,6 +68,7 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path="/:category" element={<Product />} />
                     <Route path="/san-pham/:product" element={<ProductDetail />} />
+                    <Route path="/gio-hang" element={<Cart />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

@@ -25,7 +25,7 @@ const Controller = () => {
                 <ShoppingCart />
                 <span>Xây dựng cấu hình máy tính</span>
             </Link>
-            <Link to="/cart" className="flex flex-col align-middle items-center p-2">
+            <Link to="/gio-hang" className="flex flex-col align-middle items-center p-2">
                 <ShoppingCart />
                 <span>Giỏ hàng</span>
             </Link>
