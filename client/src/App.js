@@ -25,6 +25,7 @@ import {
     faStar,
     faCheck,
     faPhone,
+    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
@@ -43,7 +44,8 @@ library.add(
     faStar,
     faStarRegular,
     faCheck,
-    faPhone
+    faPhone,
+    faTrash
 );
 
 function App() {
@@ -60,7 +62,7 @@ function App() {
     React.useEffect(() => {
         fetchProfile();
     }, []);
-    
+
     return (
         <div className="app">
             <Routes>

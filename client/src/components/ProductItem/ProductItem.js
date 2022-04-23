@@ -1,8 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatVndCurrency, getImageUrl } from "../../helpers/Common";
+import * as cartActions from "../../stores/cartReducer";
+
 export default function ProductItem({ product }) {
+    const dispatch = useDispatch();
+
+    const addProductToCart = () => {
+        dispatch(cartActions.addProductToCart(product));
+    };
+
     const productStockStatus = product.stock ? (
         <div>
             <div>
@@ -11,7 +20,10 @@ export default function ProductItem({ product }) {
                 </span>
             </div>
             <div>
-                <span className="font-semibold hover:underline cursor-pointer">
+                <span
+                    className="font-semibold hover:underline cursor-pointer"
+                    onClick={addProductToCart}
+                >
                     Thêm vào giỏ hàng
                 </span>
             </div>
@@ -45,7 +57,9 @@ export default function ProductItem({ product }) {
                         {!product.sale ? (
                             <>
                                 <div className="flex">
-                                    <div className="flex-grow flex items-end">{productStockStatus}</div>
+                                    <div className="flex-grow flex items-end">
+                                        {productStockStatus}
+                                    </div>
                                     <div className="text-right">
                                         <div>
                                             <span className="font-bold text-xl text-red-500">
@@ -65,7 +79,9 @@ export default function ProductItem({ product }) {
                         ) : (
                             <>
                                 <div className="flex">
-                                    <div className="flex-grow flex items-end">{productStockStatus}</div>
+                                    <div className="flex-grow flex items-end">
+                                        {productStockStatus}
+                                    </div>
                                     <div className="flex items-end">
                                         <span className="font-bold text-xl text-red-500">
                                             {formatVndCurrency(product.price)}

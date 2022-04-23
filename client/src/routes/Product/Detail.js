@@ -6,9 +6,10 @@ import { classNames, formatVndCurrency, getImageUrl } from "../../helpers/Common
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProductItem } from "../../components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReviewSection from "./ReviewSection";
 import CommentSection from "./CommentSection";
+import * as cartActions from "../../stores/cartReducer";
 
 function ProductDetail(props) {
     const SECTION = {
@@ -23,6 +24,7 @@ function ProductDetail(props) {
     const {
         profile: { info: user },
     } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
     const params = useParams();
     const carouselRef = React.useRef(null);
     const [ratingIcons, setRatingIcons] = React.useState([]);
@@ -105,6 +107,10 @@ function ProductDetail(props) {
         carouselRef.current.slickGoTo(idx);
     };
 
+    const addProductToCart = () => {
+        dispatch(cartActions.addProductToCart(product));
+    };
+
     return (
         <>
             {product && (
@@ -173,7 +179,9 @@ function ProductDetail(props) {
                                                 ))}{" "}
                                                 {avgRating}
                                             </div>
-                                            <div className="px-4">Bình luận: {product.comments.length}</div>
+                                            <div className="px-4">
+                                                Bình luận: {product.comments.length}
+                                            </div>
                                             <div className="pl-4">Lượt xem: 0</div>
                                         </div>
                                         <div className="my-4">
@@ -256,7 +264,10 @@ function ProductDetail(props) {
                                                 </button>
                                             </div>
                                         </div>
-                                        <button className="bg-red-600 rounded-lg mt-4 w-full p-4 text-white">
+                                        <button
+                                            className="bg-red-600 rounded-lg mt-4 w-full p-4 text-white"
+                                            onClick={addProductToCart}
+                                        >
                                             <div className="font-bold text-xl">ĐẶT MUA NGAY</div>
                                             <div>Giao hàng tận nơi nhanh chóng</div>
                                         </button>

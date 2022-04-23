@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const initialState = {
     cart: [],
@@ -12,14 +13,21 @@ const cart = createSlice({
     initialState: initialState,
     reducers: {
         addProductToCart: (state, action) => {
-            state.cart.push({ _id: action.payload._id, product: action.payload, quantity: 1 });
+            const existProduct = state.cart.find((_product) => _product._id === action.payload._id);
+            if (existProduct) {
+                existProduct.quantity += 1;
+            } else {
+                state.cart.push({ _id: action.payload._id, data: action.payload, quantity: 1 });
+            }
+            toast.success("Thêm sản phẩm vào giỏ hàng thành công");
         },
         removeProductFromCart: (state, action) => {
-            state.cart = state.cart.filter((_product) => _product._id !== action.payload._id);
+            state.cart = state.cart.filter((_product) => _product._id !== action.payload);
+            toast.success("Xóa sản phẩm khỏi giỏ hàng thành công");
         },
         changeProductQuantity: (state, action) => {
             const product = state.cart.find((_product) => _product._id === action.payload._id);
-            product.quantity += action.payload.quantity;
+            product.quantity = action.payload.quantity;
         },
         setName: (state, action) => {
             state.name = action.payload;
