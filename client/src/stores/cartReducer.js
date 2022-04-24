@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import orderApi from "../requests/OrderRequest";
 
 const initialState = {
     cart: [],
@@ -29,14 +30,20 @@ const cart = createSlice({
             const product = state.cart.find((_product) => _product._id === action.payload._id);
             product.quantity = action.payload.quantity;
         },
+        setProperty: (state, action) => {
+            state[action.payload.name] = action.payload.value;
+        },
         setName: (state, action) => {
             state.name = action.payload;
+        },
+        setPhone: (state, action) => {
+            state.phone = action.payload;
         },
         setAddress: (state, action) => {
             state.address = action.payload;
         },
-        setPhone: (state, action) => {
-            state.phone = action.payload;
+        clearCart: (state) => {
+            state.cart = [];
         },
     },
 });
@@ -45,11 +52,30 @@ export const {
     addProductToCart,
     removeProductFromCart,
     changeProductQuantity,
+    setProperty,
+    clearCart,
     setName,
-    setAddress,
     setPhone,
+    setAddress,
 } = cart.actions;
 
-export {};
+const createOrder = (data) => {
+    return async (dispatch) => {
+        try {
+            await orderApi.createOrder(data);
+            dispatch(clearCart());
+            toast.success(
+                "Đặt hàng thành công. Nhân viên chúng tôi sẽ sớm liên hệ với bạn để xác nhận đơn hàng. Xin chân thành cảm ơn"
+            );
+        } catch (e) {
+            toast.error(
+                e.response?.data?.error?.message || "Đặt hàng thất bại, vui lòng thử lại sau."
+            );
+            console.error(e);
+        }
+    };
+};
+
+export { createOrder };
 
 export default cart.reducer;

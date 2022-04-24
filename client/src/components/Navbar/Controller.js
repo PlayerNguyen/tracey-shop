@@ -62,6 +62,14 @@ const Controller = () => {
                             >
                                 Thông tin cá nhân
                             </div>
+                            <Link to="/don-hang">
+                                <div
+                                    className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+                                    role="menuitem"
+                                >
+                                    Đơn hàng
+                                </div>
+                            </Link>
                             <Link to="/dashboard">
                                 <div
                                     className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"

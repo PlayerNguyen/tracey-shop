@@ -16,7 +16,7 @@ export default function ProductItem({ product }) {
         <div>
             <div>
                 <span className="font-semibold text-green-500">
-                    <FontAwesomeIcon icon="check" /> Còn hàng
+                    <FontAwesomeIcon icon="check" /> Có hàng
                 </span>
             </div>
             <div>
@@ -24,7 +24,7 @@ export default function ProductItem({ product }) {
                     className="font-semibold hover:underline cursor-pointer"
                     onClick={addProductToCart}
                 >
-                    Thêm vào giỏ hàng
+                    <FontAwesomeIcon icon="cart-shopping" />
                 </span>
             </div>
         </div>

@@ -5,6 +5,7 @@ import Home from "./routes/Home/Home";
 import Product from "./routes/Product/List";
 import ProductDetail from "./routes/Product/Detail";
 import Cart from "./routes/Cart";
+import MyOrder from "./routes/MyOrder";
 import Login from "./routes/Login/Login";
 import Signup from "./routes/SignUp/SignUp";
 import Dev from "./routes/dev/Dev";
@@ -26,6 +27,7 @@ import {
     faCheck,
     faPhone,
     faTrash,
+    faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
@@ -45,7 +47,8 @@ library.add(
     faStarRegular,
     faCheck,
     faPhone,
-    faTrash
+    faTrash,
+    faCartShopping
 );
 
 function App() {
@@ -68,9 +71,10 @@ function App() {
             <Routes>
                 <Route path="/" element={<UserLayout />}>
                     <Route index element={<Home />} />
-                    <Route path="/:category" element={<Product />} />
-                    <Route path="/san-pham/:product" element={<ProductDetail />} />
+                    <Route path="/don-hang" element={<MyOrder />} />
                     <Route path="/gio-hang" element={<Cart />} />
+                    <Route path="/san-pham/:product" element={<ProductDetail />} />
+                    <Route path="/:category" element={<Product />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
