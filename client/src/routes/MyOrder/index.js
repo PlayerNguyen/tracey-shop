@@ -3,9 +3,17 @@ import React from "react";
 import { toast } from "react-toastify";
 import { formatVndCurrency } from "../../helpers/Common";
 import userApi from "../../requests/UserRequest";
+import OrderDetailModal from "./order-detail-modal";
 
 function MyOrder() {
     const [orders, setOrders] = React.useState([]);
+    const [openOrdetDetail, setOpenOrdetDetail] = React.useState(false);
+    const [selectedOrder, setSelectedOrder] = React.useState(null);
+
+    const handleCloseOrderDetailModal = () => {
+        setOpenOrdetDetail(false);
+        setSelectedOrder(null);
+    };
 
     const getUserOrders = async () => {
         try {
@@ -31,18 +39,32 @@ function MyOrder() {
                         <table className="w-full table-fixed border-collapse mt-4">
                             <thead>
                                 <tr>
-                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">Ngày đặt</th>
-                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">Trạng thái</th>
-                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">Tổng tiền</th>
-                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">Chi tiết</th>
+                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">
+                                        Ngày đặt
+                                    </th>
+                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">
+                                        Trạng thái
+                                    </th>
+                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">
+                                        Tổng tiền
+                                    </th>
+                                    <th className="border border-slate-300 p-3 bg-gray-800 text-white">
+                                        Chi tiết
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {orders.map((_order) => (
                                     <tr key={_order._id} className="hover:bg-gray-200">
-                                        <td className="border border-slate-300 p-3">{moment(_order.createdAt).format("DD/MM/YYYY")}</td>
-                                        <td className="border border-slate-300 p-3">{_order.status}</td>
-                                        <td className="border border-slate-300 p-3">{formatVndCurrency(_order.totalPrice)}</td>
+                                        <td className="border border-slate-300 p-3">
+                                            {moment(_order.createdAt).format("DD/MM/YYYY")}
+                                        </td>
+                                        <td className="border border-slate-300 p-3">
+                                            {_order.status}
+                                        </td>
+                                        <td className="border border-slate-300 p-3">
+                                            {formatVndCurrency(_order.totalPrice)}
+                                        </td>
                                         <td className="border border-slate-300 p-3">
                                             <span className="cursor-pointer hover:underline hover:font-semibold">
                                                 Xem chi tiết
@@ -52,6 +74,11 @@ function MyOrder() {
                                 ))}
                             </tbody>
                         </table>
+                        <OrderDetailModal
+                            open={openOrdetDetail}
+                            onClose={handleCloseOrderDetailModal}
+                            orderDetail={selectedOrder}
+                        />
                     </>
                 ) : (
                     <>

@@ -15,16 +15,17 @@ function Modal(props) {
         : children;
     return (
         <>
-            <div
-                className={classNames(
-                    open ? "block" : "hidden",
-                    dimmer && "bg-black/50",
-                    "fixed w-full h-screen top-0 left-0 flex items-center justify-center overflow-auto"
-                )}
-                onClick={onClose}
-            >
-                {clonedChildren}
-            </div>
+            {open && (
+                <div
+                    className={classNames(
+                        dimmer && "bg-black/50",
+                        "fixed w-full h-screen top-0 left-0 flex items-center justify-center overflow-auto"
+                    )}
+                    onClick={onClose}
+                >
+                    {clonedChildren}
+                </div>
+            )}
         </>
     );
 }
