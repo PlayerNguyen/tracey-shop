@@ -4,6 +4,8 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./routes/Home/Home";
 import Product from "./routes/Product/List";
 import ProductDetail from "./routes/Product/Detail";
+import Cart from "./routes/Cart";
+import MyOrder from "./routes/MyOrder";
 import Login from "./routes/Login/Login";
 import Signup from "./routes/SignUp/SignUp";
 import Dev from "./routes/dev/Dev";
@@ -24,6 +26,8 @@ import {
     faStar,
     faCheck,
     faPhone,
+    faTrash,
+    faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
@@ -42,7 +46,9 @@ library.add(
     faStar,
     faStarRegular,
     faCheck,
-    faPhone
+    faPhone,
+    faTrash,
+    faCartShopping
 );
 
 function App() {
@@ -59,14 +65,16 @@ function App() {
     React.useEffect(() => {
         fetchProfile();
     }, []);
-    
+
     return (
         <div className="app">
             <Routes>
                 <Route path="/" element={<UserLayout />}>
                     <Route index element={<Home />} />
-                    <Route path="/:category" element={<Product />} />
+                    <Route path="/don-hang" element={<MyOrder />} />
+                    <Route path="/gio-hang" element={<Cart />} />
                     <Route path="/san-pham/:product" element={<ProductDetail />} />
+                    <Route path="/:category" element={<Product />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

@@ -37,9 +37,7 @@ async function getUserOrder(req, res, next) {
 
 async function createOrder(req, res, next) {
   try {
-    console.log(req.body);
     const { address, phone, name, products } = req.body;
-
     // Field checker
     if (!(address && phone && name && products)) {
       return next(
@@ -53,7 +51,7 @@ async function createOrder(req, res, next) {
       phone,
       name,
       products,
-      user: req.userData._id,
+      user: req.userData?._id,
     });
     await order.save();
     res.status(200).json(order);

@@ -91,6 +91,15 @@ function logout() {
     return (dispatch) => {
         dispatch(setAuthenticated(false));
         localStorage.removeItem("token");
+        dispatch(
+            setProfileInfo({
+                phone: "",
+                name: "",
+                admin: false,
+                _id: "",
+                address: "",
+            })
+        );
         toast.success("Đăng xuất thành công, hẹn gặp lại.");
     };
 }

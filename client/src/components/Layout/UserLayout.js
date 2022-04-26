@@ -6,7 +6,7 @@ import Navbar from "../Navbar/Navbar";
 function UserLayout() {
     return (
         <>
-            <div>
+            <div className="h-full">
                 {/* Nav bar first */}
                 <div className="sticky top-0 z-10">
                     <Navbar />

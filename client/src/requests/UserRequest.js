@@ -27,11 +27,19 @@ async function getProfile() {
     return AxiosHelper.get("/users/me");
 }
 
+async function getUserOrders() {
+    return AxiosHelper({
+        url: "/orders/my-order",
+        method: "GET",
+    });
+}
+
 const UserRequest = {
     createSignInRequest,
     createUserByAdmin,
     getAllUser,
     createSignUpRequest,
     getProfile,
+    getUserOrders,
 };
 export default UserRequest;
