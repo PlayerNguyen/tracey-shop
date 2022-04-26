@@ -1,5 +1,4 @@
 import React from "react";
-// import * as userApi from "../../../utils/api/users";
 import UpdateUser from "./update";
 import { v1 as uuidv1 } from "uuid";
 import { toast } from "react-toastify";
@@ -48,7 +47,7 @@ function User() {
             >
                 Tạo mới
             </button>
-            <div className="border rounded mt-2 overflow-hidden">
+            <div className="border rounded mt-2">
                 <table className="table-auto w-full">
                     <thead>
                         <tr className="bg-gray-900 text-white">

@@ -1,8 +1,16 @@
 import React from 'react';
-import Modal from '../../components/Modal';
-import { formatVndCurrency, getImageUrl } from '../../helpers/Common';
+import Modal from '../../../components/Modal';
+import { formatVndCurrency, getImageUrl } from '../../../helpers/Common';
 
-function OrderDetailModal({ open, onClose, orderDetail }) {
+function UpdateOrderDetail({ open, onClose, updateOrderDetail }) {
+  const [orderDetail, setOrderDetail] = React.useState({
+    _id: '',
+    name: '',
+    phone: '',
+    address: '',
+    products: [],
+    totalPrice: 0,
+  });
   return (
     <>
       {orderDetail && (
@@ -83,4 +91,4 @@ function OrderDetailModal({ open, onClose, orderDetail }) {
   );
 }
 
-export default OrderDetailModal;
+export default UpdateOrderDetail;

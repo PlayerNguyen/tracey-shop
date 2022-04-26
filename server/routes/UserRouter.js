@@ -118,7 +118,7 @@ router.post(
 
                         res.json({
                             token: await Token.createToken(
-                                { phone, name: _user.name, _id: _user._id },
+                                { phone, name: _user.name, _id: _user._id, address: _user.address },
                                 process.env.USER_SESSION_EXPIRATION || "15m"
                             ),
                         });

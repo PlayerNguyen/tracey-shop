@@ -14,6 +14,7 @@ import AdminUser from "./routes/Admin/User";
 import AdminCategory from "./routes/Admin/Category";
 import AdminManufacturer from "./routes/Admin/Manufacturer";
 import AdminProduct from "./routes/Admin/Product";
+import AdminOrder from "./routes/Admin/Order";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     faBoxOpen,
@@ -85,6 +86,7 @@ function App() {
                     <Route path="category" element={<AdminCategory />} />
                     <Route path="manufacturer" element={<AdminManufacturer />} />
                     <Route path="product" element={<AdminProduct />} />
+                    <Route path="order" element={<AdminOrder />} />
                 </Route>
             </Routes>
         </div>

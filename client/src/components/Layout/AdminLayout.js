@@ -70,7 +70,7 @@ function AdminLayout() {
         },
         {
             name: "Hóa đơn bán hàng",
-            path: "/dashboard/output-receipt",
+            path: "/dashboard/order",
             icon: "box-open",
         },
         {
