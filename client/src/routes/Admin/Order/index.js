@@ -10,6 +10,7 @@ function Order() {
   const [orders, setOrders] = React.useState([]);
   const [updateModal, setUpdateModal] = React.useState(false);
   const [randomKey, setRandomKey] = React.useState(0);
+  const [updateOrder, setUpdateOrder] = React.useState(null);
 
   const fetchOrders = async () => {
     try {
@@ -24,13 +25,17 @@ function Order() {
     fetchOrders();
   }, []);
 
-  const handleOpenUpdateModal = () => {
+  const handleOpenUpdateModal = (_updateOrder = null) => {
     setRandomKey(uuidv1());
     setUpdateModal(true);
+    if (_updateOrder) {
+      setUpdateOrder(_updateOrder);
+    }
   };
 
   const handleCloseUpdateModal = () => {
     setUpdateModal(false);
+    setUpdateOrder(null);
   };
 
   const handleSave = async (orderData) => {
@@ -76,7 +81,7 @@ function Order() {
       <div className="text-2xl font-bold">Hóa đơn bán hàng</div>
       <button
         className="bg-transparent hover:underline hover:text-indigo-500 font-semibold px-2 py-1 mt-4"
-        onClick={handleOpenUpdateModal}
+        onClick={() => handleOpenUpdateModal()}
       >
         Tạo mới
       </button>
@@ -90,6 +95,7 @@ function Order() {
               <th>Địa chỉ</th>
               <th>Tổng tiền</th>
               <th>Trạng thái</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -109,6 +115,14 @@ function Order() {
                     onChange={handleChangeStatus(_order._id)}
                   />
                 </td>
+                <td className="text-center">
+                  <button
+                    className="hover:underline hover:text-blue-500 font-semibold"
+                    onClick={() => handleOpenUpdateModal(_order)}
+                  >
+                    Xem chi tiết
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -119,6 +133,7 @@ function Order() {
         open={updateModal}
         onClose={handleCloseUpdateModal}
         onSave={handleSave}
+        updateOrder={updateOrder}
       />
     </>
   );

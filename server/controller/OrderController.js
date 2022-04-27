@@ -14,7 +14,10 @@ async function getOrders(req, res, next) {
       return next(new MiddlewareError(401, Language.Response.Unauthorized));
     }
 
-    const orders = await OrderModel.find({});
+    const orders = await OrderModel.find({}).populate({
+      path: 'products.product',
+      populate: 'thumbnail',
+    });
     res.status(200).json(orders);
   } catch (err) {
     next(err);
