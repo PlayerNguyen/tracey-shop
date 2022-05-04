@@ -54,7 +54,7 @@ export default function ProductItem({ product }) {
                                 <span className="font-bold text-lg">{product.name}</span>
                             </div>
                         </Link>
-                        {!product.sale ? (
+                        {product.sale ? (
                             <>
                                 <div className="flex">
                                     <div className="flex-grow flex items-end">
