@@ -52,13 +52,24 @@ function Build() {
 
   return (
     <>
-      <div className="bg-white grid grid-cols-6 gap-x-4">
-        <table className="table-fixed w-full">
+      <div className="bg-white p-4">
+        <table className="w-full">
           <tbody>
             {items.map((item, index) => (
               <tr key={index}>
-                <td>
+                <td className="p-8 border border-gray-200 w-48">
                   {index + 1}. {item.category}
+                </td>
+                <td className="border border-gray-200 p-4">
+                  {item.product ? (
+                    <></>
+                  ) : (
+                    <>
+                      <button className="bg-blue-500 text-white font-semibold p-2 rounded">
+                        Chọn {item.category}
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
