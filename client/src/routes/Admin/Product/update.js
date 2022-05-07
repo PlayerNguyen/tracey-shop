@@ -47,11 +47,11 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories, manuf
                 categoryOption: categoryOptions.find(
                     (_option) => _option.value === updateProduct.category._id
                 ),
-                manufacturer: updateProduct.manufacturer._id,
+                manufacturer: updateProduct.manufacturer?._id,
                 manufacturerOption: manufacturerOptions.find(
-                    (_option) => _option.value === updateProduct.manufacturer._id
+                    (_option) => _option.value === updateProduct.manufacturer?._id
                 ),
-                thumbnail: updateProduct.thumbnail._id,
+                thumbnail: updateProduct.thumbnail?._id,
                 thumbnailImg: updateProduct.thumbnail.fileName,
                 properties: updateProduct.properties.map((_property, _idx) => ({
                     ..._property,

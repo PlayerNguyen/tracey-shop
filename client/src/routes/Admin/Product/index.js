@@ -140,15 +140,15 @@ function Products() {
                                 <td className="text-center py-2">{_idx + 1}</td>
                                 <td className="py-2">
                                     <img
-                                        src={getImageUrl(_product.thumbnail.fileName)}
+                                        src={getImageUrl(_product.thumbnail?.fileName)}
                                         alt={_product.name}
                                     />
                                 </td>
                                 <td className="py-2">{_product.name}</td>
                                 <td className="py-2">{formatVndCurrency(_product.price)}</td>
                                 <td className="py-2">{formatVndCurrency(_product.sale)}</td>
-                                <td className="py-2">{_product.category.name}</td>
-                                <td className="py-2">{_product.manufacturer.name}</td>
+                                <td className="py-2">{_product.category?.name}</td>
+                                <td className="py-2">{_product.manufacturer?.name}</td>
                                 <td className="py-2 divide-x">
                                     <button
                                         className="bg-transparent hover:underline hover:text-indigo-500 px-2 py-1"
