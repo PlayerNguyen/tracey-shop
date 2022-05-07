@@ -108,7 +108,7 @@ async function deleteProduct(req, res, next) {
  */
 async function getAllProducts(req, res, next) {
   try {
-    const { category, skip, limit } = req.query;
+    const { category, skip, limit, query } = req.query;
     const categoryFound = await CategoryModel.findOne({
       slug: category,
     });
@@ -120,6 +120,13 @@ async function getAllProducts(req, res, next) {
     if (category) {
       products = ProductModel.find({
         category: categoryFound._id,
+      });
+    } else if (query) {
+      products = ProductModel.find({
+        $or: [
+          { name: { $regex: query, $options: "i" } },
+          { description: { $regex: query, $options: "i" } },
+        ],
       });
     }
     if (skip) {
