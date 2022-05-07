@@ -59,6 +59,7 @@ function ProductDetail(props) {
             setLoading(true);
             const productResp = await productApi.getProductById(id);
             const _product = productResp.data;
+            console.log(_product);
             const reviewsResp = await productApi.getProductReview(_product._id);
             _product.reviews = reviewsResp.data;
             setProduct(_product);
@@ -188,7 +189,7 @@ function ProductDetail(props) {
                                             <div>
                                                 <label className="font-semibold">Giới thiệu</label>
                                             </div>
-                                            <pre>{product.description}</pre>
+                                            <span>{product.description}</span>
                                         </div>
                                         <div>
                                             <div>
@@ -204,7 +205,7 @@ function ProductDetail(props) {
                                                                 Hãng sản xuất
                                                             </td>
                                                             <td className="px-4">
-                                                                {product.manufacturer.name}
+                                                                {product.manufacturer && product.manufacturer.name}
                                                             </td>
                                                         </tr>
                                                         <tr className="odd:bg-gray-100">
