@@ -22,7 +22,7 @@ const Home = () => {
 
     return (
         <>
-            <div className="flex gap-4">
+            <div className="gap-4 hidden md:flex">
                 <div className="md:basis-1/6">
                     <CategoryAside />
                 </div>
