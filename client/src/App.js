@@ -14,6 +14,8 @@ import AdminUser from "./routes/Admin/User";
 import AdminCategory from "./routes/Admin/Category";
 import AdminManufacturer from "./routes/Admin/Manufacturer";
 import AdminProduct from "./routes/Admin/Product";
+import AdminOrder from "./routes/Admin/Order";
+import AdminImport from "./routes/Admin/Import";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     faBoxOpen,
@@ -34,6 +36,7 @@ import { AdminLayout, UserLayout } from "./components";
 import { useDispatch } from "react-redux";
 import { checkTokenValid } from "./helpers/Common";
 import * as authActions from "./stores/authReducer";
+import Build from "./routes/Build";
 
 library.add(
     faUser,
@@ -73,6 +76,7 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path="/don-hang" element={<MyOrder />} />
                     <Route path="/gio-hang" element={<Cart />} />
+                    <Route path="/xay-dung-cau-hinh" element={<Build />} />
                     <Route path="/san-pham/:product" element={<ProductDetail />} />
                     <Route path="/:category" element={<Product />} />
                 </Route>
@@ -85,6 +89,8 @@ function App() {
                     <Route path="category" element={<AdminCategory />} />
                     <Route path="manufacturer" element={<AdminManufacturer />} />
                     <Route path="product" element={<AdminProduct />} />
+                    <Route path="order" element={<AdminOrder />} />
+                    <Route path="import" element={<AdminImport />} />
                 </Route>
             </Routes>
         </div>

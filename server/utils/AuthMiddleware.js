@@ -20,7 +20,6 @@ function forciblyRequireAuth(req, res, next) {
             }
             // console.log(user);
             req.userData = { ...data, admin: user.admin };
-            console.log(req.userData);
             return next();
         })
         .catch(next);

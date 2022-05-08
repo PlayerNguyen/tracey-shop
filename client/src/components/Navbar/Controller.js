@@ -21,7 +21,7 @@ const Controller = () => {
 
     return (
         <div className="flex flex-row text-gray-500 mx-0 md:mx-12 gap-3 items-center align-middle mt-4 md:my-0">
-            <Link to="/build" className="flex flex-col align-middle items-center p-2">
+            <Link to="/xay-dung-cau-hinh" className="flex flex-col align-middle items-center p-2">
                 <ShoppingCart />
                 <span>Xây dựng cấu hình máy tính</span>
             </Link>
