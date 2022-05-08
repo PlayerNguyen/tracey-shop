@@ -1,6 +1,6 @@
-const OrderModel = require("../model/OrderModel");
-const Language = require("../utils/Language");
-const MiddlewareError = require("../utils/MiddlewareError");
+const OrderModel = require('../model/OrderModel');
+const Language = require('../utils/Language');
+const MiddlewareError = require('../utils/MiddlewareError');
 
 /**
  * Get all orders from database
@@ -14,7 +14,10 @@ async function getOrders(req, res, next) {
       return next(new MiddlewareError(401, Language.Response.Unauthorized));
     }
 
-    const orders = await OrderModel.find({});
+    const orders = await OrderModel.find({}).populate({
+      path: 'products.product',
+      populate: 'thumbnail',
+    });
     res.status(200).json(orders);
   } catch (err) {
     next(err);
@@ -28,7 +31,10 @@ async function getUserOrder(req, res, next) {
       return next(new MiddlewareError(401, Language.Response.Unauthorized));
     }
     const { _id } = req.userData;
-    const orders = await OrderModel.find({ user: _id });
+    const orders = await OrderModel.find({ user: _id }).populate({
+      path: 'products.product',
+      populate: 'thumbnail',
+    });
     res.status(200).json(orders);
   } catch (err) {
     next(err);
@@ -41,7 +47,7 @@ async function createOrder(req, res, next) {
     // Field checker
     if (!(address && phone && name && products)) {
       return next(
-        new MiddlewareError(400, Language.Response.FieldNotFoundOrEmpty)
+        new MiddlewareError(400, Language.Response.FieldNotFoundOrEmpty),
       );
     }
 
@@ -55,6 +61,27 @@ async function createOrder(req, res, next) {
     });
     await order.save();
     res.status(200).json(order);
+  } catch (err) {
+    return next(err);
+  }
+}
+
+async function updateOrder(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    // Order not found
+    if (!(await OrderModel.findOne({ _id: id }))) {
+      throw new MiddlewareError(404, Language.Response.OrderNotFound);
+    }
+
+    const { status } = req.body;
+
+    const order = await OrderModel.findByIdAndUpdate(id, {
+      status,
+    });
+
+    res.json(order);
   } catch (err) {
     return next(err);
   }
@@ -90,6 +117,7 @@ const OrderController = {
   getOrders,
   getUserOrder,
   createOrder,
+  updateOrder,
   deleteOrder,
 };
 

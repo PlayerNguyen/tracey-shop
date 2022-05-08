@@ -1,28 +1,68 @@
 import React from 'react';
-import Modal from '../../components/Modal';
-import { formatVndCurrency, getImageUrl } from '../../helpers/Common';
+import Modal from '../../../components/Modal';
+import {
+  classNames,
+  formatVndCurrency,
+  getImageUrl,
+} from '../../../helpers/Common';
 
-function OrderDetailModal({ open, onClose, orderDetail }) {
+function UpdateOrderDetail({ open, onClose, updateOrder }) {
+  const [orderDetail, setOrderDetail] = React.useState({
+    _id: '',
+    name: '',
+    phone: '',
+    address: '',
+    products: [],
+    totalPrice: 0,
+  });
+
+  React.useEffect(() => {
+    if (updateOrder) {
+      setOrderDetail({ ...orderDetail, ...updateOrder });
+    }
+  }, [updateOrder]);
+
+  const readOnly = Boolean(updateOrder);
+
   return (
     <>
       {orderDetail && (
         <Modal dimmer={true} onClose={onClose} open={open}>
           <div className="w-2/3 bg-white border rounded-xl p-4">
             <p className="text-xl font-semibold">Thông tin đơn hàng</p>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 gap-x-4">
               <div>
                 <div className="font-semibold">Họ tên người mua:</div>
-                <div>{orderDetail.name}</div>
+                <div>
+                  <input
+                    className={classNames(!readOnly && 'input w-full')}
+                    value={orderDetail.name}
+                    readOnly={readOnly}
+                  />
+                </div>
               </div>
               <div>
                 <div className="font-semibold">SĐT:</div>
-                <div>{orderDetail.phone}</div>
+                <div>
+                  <input
+                    className={classNames(!readOnly && 'input w-full')}
+                    value={orderDetail.phone}
+                    readOnly={readOnly}
+                  />
+                </div>
               </div>
               <div>
                 <div className="font-semibold">Địa chỉ giao hàng:</div>
-                <div>{orderDetail.address}</div>
+                <div>
+                  <input
+                    className={classNames(!readOnly && 'input w-full')}
+                    value={orderDetail.address}
+                    readOnly={readOnly}
+                  />
+                </div>
               </div>
             </div>
+            <button className='mt-4 font-semibold hover:underline hover:text-blue-500'>Thêm sản phẩm</button>
             <table className="w-full border-collapse mt-4">
               <thead>
                 <tr>
@@ -83,4 +123,4 @@ function OrderDetailModal({ open, onClose, orderDetail }) {
   );
 }
 
-export default OrderDetailModal;
+export default UpdateOrderDetail;
