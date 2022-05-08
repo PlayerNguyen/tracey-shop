@@ -14,6 +14,8 @@ import AdminUser from "./routes/Admin/User";
 import AdminCategory from "./routes/Admin/Category";
 import AdminManufacturer from "./routes/Admin/Manufacturer";
 import AdminProduct from "./routes/Admin/Product";
+import AdminOrder from "./routes/Admin/Order";
+import AdminImport from "./routes/Admin/Import";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     faBoxOpen,
@@ -34,47 +36,51 @@ import { AdminLayout, UserLayout } from "./components";
 import { useDispatch } from "react-redux";
 import { checkTokenValid } from "./helpers/Common";
 import * as authActions from "./stores/authReducer";
+import Build from "./routes/Build";
+import Search from './routes/Search/Search';
 
 library.add(
-    faUser,
-    faSpinner,
-    faList,
-    faBoxOpen,
-    faPlus,
-    faChevronDown,
-    faIndustry,
-    faStar,
-    faStarRegular,
-    faCheck,
-    faPhone,
-    faTrash,
-    faCartShopping
+  faUser,
+  faSpinner,
+  faList,
+  faBoxOpen,
+  faPlus,
+  faChevronDown,
+  faIndustry,
+  faStar,
+  faStarRegular,
+  faCheck,
+  faPhone,
+  faTrash,
+  faCartShopping,
 );
 
 function App() {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const fetchProfile = async () => {
-        const tokenValid = checkTokenValid();
-        dispatch(authActions.setAuthenticated(tokenValid));
-        if (tokenValid) {
-            dispatch(authActions.getProfile());
-        }
-    };
+  const fetchProfile = async () => {
+    const tokenValid = checkTokenValid();
+    dispatch(authActions.setAuthenticated(tokenValid));
+    if (tokenValid) {
+      dispatch(authActions.getProfile());
+    }
+  };
 
-    React.useEffect(() => {
-        fetchProfile();
-    }, []);
+  React.useEffect(() => {
+    fetchProfile();
+  }, []);
 
-    return (
+ return (
         <div className="app">
             <Routes>
                 <Route path="/" element={<UserLayout />}>
                     <Route index element={<Home />} />
                     <Route path="/don-hang" element={<MyOrder />} />
                     <Route path="/gio-hang" element={<Cart />} />
+                    <Route path="/xay-dung-cau-hinh" element={<Build />} />
                     <Route path="/san-pham/:product" element={<ProductDetail />} />
                     <Route path="/:category" element={<Product />} />
+                    <Route path="/tim-kiem/:query" element={<Search />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
@@ -85,6 +91,8 @@ function App() {
                     <Route path="category" element={<AdminCategory />} />
                     <Route path="manufacturer" element={<AdminManufacturer />} />
                     <Route path="product" element={<AdminProduct />} />
+                    <Route path="order" element={<AdminOrder />} />
+                    <Route path="import" element={<AdminImport />} />
                 </Route>
             </Routes>
         </div>

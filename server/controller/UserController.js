@@ -58,11 +58,16 @@ async function changePassword(phone, newPassword) {
     return UserModel.findOneAndUpdate({ phone }, { password: newPassword });
 }
 
+async function updateUser(id, profile) {
+    return UserModel.findByIdAndUpdate(id, { ...profile });
+}
+
 const UserController = {
     createUser,
     comparePassword,
     hasUser,
     getUser,
     getAll,
+    updateUser,
 };
 module.exports = UserController;

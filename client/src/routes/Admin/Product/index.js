@@ -120,7 +120,7 @@ function Products() {
             >
                 Tạo mới
             </button>
-            <div className="border rounded mt-2 overflow-hidden">
+            <div className="border rounded mt-2">
                 <table className="table-fixed w-full">
                     <thead>
                         <tr className="bg-gray-900 text-white">

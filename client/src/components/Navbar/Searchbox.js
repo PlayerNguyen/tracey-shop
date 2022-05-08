@@ -1,29 +1,53 @@
-import React from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { Search } from "react-feather";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Search } from 'react-feather';
+import { Link, useNavigate } from 'react-router-dom';
 
 /**
  * A dialog to suggest keyword or something ...
  */
-const SearchBoxSuggestion = ({ visible, query }) => {
+const SearchBoxSuggestion = ({ visible, close, query }) => {
+  const navigate = useNavigate();
   const [history, setHistory] = useState([
-    { name: "Thiết bị" },
-    { name: "Điện thoại" },
+    { name: 'Thiết bị' },
+    { name: 'Điện thoại' },
   ]);
 
   const [suggestion, setSuggestion] = useState([
-    { name: "Máy tính", url: "/may-tinh" },
+    { name: 'Máy tính', url: '/may-tinh' },
   ]);
 
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setLoading(true);
+    // Load from localStorage
+    const history = JSON.parse(localStorage.getItem('history'));
+
+    setHistory(history || []);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    const history = JSON.parse(localStorage.getItem('history'));
+    if (history) {
+      const filtered = history.filter((item) => item.name.includes(query));
+      setHistory(filtered);
+    }
+  }, [query]);
+
+  const handleRemoveHistory = () => {
+    // Remove all histories
+    localStorage.removeItem('history');
+    setHistory([]);
+  };
+
   return (
     <div
       className={`${
-        visible ? "flex flex-col" : "hidden"
+        visible ? 'flex flex-col' : 'hidden'
       } p-2 absolute bg-white w-full shadow-sm rounded-b-lg`}
     >
       {loading ? (
@@ -37,25 +61,40 @@ const SearchBoxSuggestion = ({ visible, query }) => {
       ) : (
         <>
           {/* History */}
-          {history && query === "" && history.length > 0 ? (
+          {history && history.length > 0 ? (
             <div className="p-2">
-              <span className="text-gray-400 text-sm">Lịch sử tìm kiếm</span>
+              <div className="flex flex-row">
+                <span className="text-gray-400 text-sm flex-1">
+                  Lịch sử tìm kiếm
+                </span>
+                <span
+                  className="text-blue-400 text-sm hover:underline cursor-pointer"
+                  onClick={() => {
+                    handleRemoveHistory();
+                  }}
+                >
+                  Xoá lịch sử tìm kiếm
+                </span>
+              </div>
               <div className="flex flex-col">
-                {history.map((item, index) => {
-                  // Just fetch three items
-                  if (index < 3) {
+                {history
+                  .filter((_item, _index) => _index <= 3)
+                  .map((item, index) => {
                     return (
-                      <Link
-                        key={index}
-                        to={`/timkiem/${item.name}`}
-                        className="px-2 py-1 mt-2 hover:text-blue-500"
-                      >
-                        {item.name}
-                      </Link>
+                      <div className="flex flex-row my-1" key={index}>
+                        <div
+                          className="flex-1 hover:bg-gray-100 
+                      rounded cursor-pointer align-middle justify-start px-2 py-1"
+                          onClick={() => {
+                            navigate(`/tim-kiem/${item.name}`);
+                            close();
+                          }}
+                        >
+                          {item.name}
+                        </div>
+                      </div>
                     );
-                  }
-                  return <></>;
-                })}
+                  })}
               </div>
             </div>
           ) : (
@@ -80,7 +119,7 @@ const SearchBoxSuggestion = ({ visible, query }) => {
                       </Link>
                     );
                   }
-                  return <></>;
+                  return null;
                 })}
               </div>
             </div>
@@ -95,13 +134,12 @@ const SearchBoxSuggestion = ({ visible, query }) => {
 
 const Searchbox = () => {
   const [inputFocused, setInputFocused] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [isValidQuery, setIsValidQuery] = useState(false);
 
   const searchBoxRef = useRef(null);
 
   const handleFocus = () => {
-    console.log(`Set input focused to true`);
     setInputFocused(true);
   };
 
@@ -127,6 +165,28 @@ const Searchbox = () => {
     setIsValidQuery(query.length > 0);
   }, [query]);
 
+  /**
+   * Navigate user to the search result page
+   * @param {*} keywords  the keyword to search
+   */
+  const handleSearch = (keywords) => {
+    console.log(`Search for ${keywords}`);
+
+    // Add this to history
+    const history = JSON.parse(localStorage.getItem('history'));
+    if (history) {
+      // Make sure the history is not duplicated
+      let newHistory = history.filter((item) => item.name !== keywords);
+      newHistory = [{ name: keywords }, ...newHistory];
+      localStorage.setItem('history', JSON.stringify(newHistory));
+    } else {
+      localStorage.setItem('history', JSON.stringify([{ name: keywords }]));
+    }
+
+    // Navigate to the search result page
+    window.location.href = `/tim-kiem/${keywords}`;
+  };
+
   return (
     <div className="searchbox relative" ref={searchBoxRef}>
       <div
@@ -141,19 +201,35 @@ const Searchbox = () => {
           onFocus={handleFocus}
           value={query}
           onChange={handleChange}
+          onKeyDown={(e) => {
+            // Not empty and press enter key
+            if (e.key === 'Enter' && isValidQuery) {
+              handleSearch(query);
+            }
+          }}
         />
         <button
-          className={`p-2 m-1  rounded ${
+          className={`p-2 m-1 rounded ${
             isValidQuery ? `text-white` : `text-gray-500`
           } ${
             isValidQuery ? `bg-blue-500` : `bg-blue-300`
           } ease-in-out duration-300`}
-          disabled={isValidQuery}
+          disabled={!isValidQuery}
+          onClick={(e) => {
+            // console.log(e.target.disabled);
+            handleSearch(query);
+          }}
         >
           <Search className="text-white" size={16} />
         </button>
       </div>
-      <SearchBoxSuggestion visible={inputFocused} query={query} />
+      <SearchBoxSuggestion
+        visible={inputFocused}
+        query={query}
+        close={() => {
+          setInputFocused(false);
+        }}
+      />
     </div>
   );
 };

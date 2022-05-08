@@ -70,6 +70,16 @@ async function createProductComment(productId, comment) {
     });
 }
 
+async function searchProduct(query) {
+    return AxiosHelper({
+        url: `/products/`,
+        method: "GET",
+        params: {
+            query,
+        },
+    });
+}
+
 const ProductRequest = {
     getAllProduct,
     getProductByCategory,
@@ -80,5 +90,6 @@ const ProductRequest = {
     getProductReview,
     createProductReview,
     createProductComment,
+    searchProduct
 };
 export default ProductRequest;

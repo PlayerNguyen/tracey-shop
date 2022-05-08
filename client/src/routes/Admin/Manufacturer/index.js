@@ -96,7 +96,7 @@ function Manufacturers() {
             >
                 Tạo mới
             </button>
-            <div className="border rounded mt-2 overflow-hidden">
+            <div className="border rounded mt-2">
                 <table className="table-auto w-full">
                     <thead>
                         <tr className="bg-gray-900 text-white">
