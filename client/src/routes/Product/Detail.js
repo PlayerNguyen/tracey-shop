@@ -60,6 +60,7 @@ function ProductDetail(props) {
     return 0;
   }, [product]);
 
+// <<<<<<< fix/responsive-ui
   const fetchProduct = async (id) => {
     try {
       setLoading(true);
@@ -78,6 +79,29 @@ function ProductDetail(props) {
       setLoading(false);
     }
   };
+// =======
+//     const fetchProduct = async (id) => {
+//         try {
+//             setLoading(true);
+//             const productResp = await productApi.getProductById(id);
+//             const _product = productResp.data;
+//             console.log(_product);
+//             const reviewsResp = await productApi.getProductReview(_product._id);
+//             _product.reviews = reviewsResp.data;
+//             setProduct(_product);
+//         } catch (e) {
+//             toast.error(
+//                 e.response?.data?.error?.message ||
+//                     "Lấy thông tin sản phẩm thất bại! Vui lòng thử lại sau."
+//             );
+//             console.error(e);
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+// >>>>>>> main
+  
+  
 
   const fetchSuggestProduct = async (_product) => {
     try {
@@ -125,7 +149,8 @@ function ProductDetail(props) {
     <>
       {product && (
         <>
-          <div>
+// <<<<<<< fix/responsive-ui
+  <div>
             <Link className="font-semibold" to="/">
               Trang chủ
             </Link>{' '}
@@ -174,6 +199,199 @@ function ProductDetail(props) {
                             src={getImageUrl(_img.fileName)}
                             alt={product.slug}
                           />
+// =======
+//             {product && (
+//                 <>
+//                     <div>
+//                         <Link className="font-semibold" to="/">
+//                             Trang chủ
+//                         </Link>{" "}
+//                         /{" "}
+//                         <Link className="font-semibold" to={`/${product.category.slug}`}>
+//                             {product.category.name}
+//                         </Link>{" "}
+//                         / <span className="font-semibold">{product.name}</span>
+//                     </div>
+//                     <div className="bg-white rounded-xl p-4 my-4">
+//                         <div className="text-3xl font-semibold border-b pb-4">{product.name}</div>
+//                         <div className="grid grid-cols-5 gap-8 pt-4">
+//                             <div className="col-span-4">
+//                                 <div className="grid grid-cols-11 gap-8">
+//                                     <div className="col-span-4 p-8">
+//                                         <Slider
+//                                             infinite
+//                                             speed={500}
+//                                             slidesToShow={1}
+//                                             slidesToScroll={1}
+//                                             autoplay
+//                                             autoplaySpeed={5000}
+//                                             ref={carouselRef}
+//                                         >
+//                                             {product.images.map((_img) => (
+//                                                 <div key={_img._id}>
+//                                                     <img
+//                                                         className="w-full"
+//                                                         src={getImageUrl(_img.fileName)}
+//                                                         alt={product.slug}
+//                                                     />
+//                                                 </div>
+//                                             ))}
+//                                         </Slider>
+//                                         <div className="grid grid-cols-5 gap-2">
+//                                             {product.images.map((_img, _idx) => (
+//                                                 <div
+//                                                     className="border border-gray-400 cursor-pointer hover:border-2"
+//                                                     key={_img._id}
+//                                                     onClick={() => switchCarousel(_idx)}
+//                                                 >
+//                                                     <img
+//                                                         className="w-full"
+//                                                         src={getImageUrl(_img.fileName)}
+//                                                         alt={product.slug}
+//                                                     />
+//                                                 </div>
+//                                             ))}
+//                                         </div>
+//                                     </div>
+//                                     <div className="col-span-7">
+//                                         <div className="flex divide-x">
+//                                             <div className="pr-4">
+//                                                 Đánh giá:{" "}
+//                                                 {ratingIcons.map((_icon, _idx) => (
+//                                                     <FontAwesomeIcon
+//                                                         className="text-yellow-400"
+//                                                         icon={_icon}
+//                                                         key={_idx}
+//                                                     />
+//                                                 ))}{" "}
+//                                                 {avgRating}
+//                                             </div>
+//                                             <div className="px-4">
+//                                                 Bình luận: {product.comments.length}
+//                                             </div>
+//                                             <div className="pl-4">Lượt xem: 0</div>
+//                                         </div>
+//                                         <div className="my-4">
+//                                             <div>
+//                                                 <label className="font-semibold">Giới thiệu</label>
+//                                             </div>
+//                                             <span>{product.description}</span>
+//                                         </div>
+//                                         <div>
+//                                             <div>
+//                                                 <label className="font-semibold">
+//                                                     Thông số sản phẩm
+//                                                 </label>
+//                                             </div>
+//                                             <div className="h-72 overflow-auto">
+//                                                 <table className="border w-full">
+//                                                     <tbody>
+//                                                         <tr className="odd:bg-gray-100">
+//                                                             <td className="w-px whitespace-nowrap px-4 border-r">
+//                                                                 Hãng sản xuất
+//                                                             </td>
+//                                                             <td className="px-4">
+//                                                                 {product.manufacturer && product.manufacturer.name}
+//                                                             </td>
+//                                                         </tr>
+//                                                         <tr className="odd:bg-gray-100">
+//                                                             <td className="w-px whitespace-nowrap px-4 border-r">
+//                                                                 Thời gian bảo hành
+//                                                             </td>
+//                                                             <td className="px-4">
+//                                                                 {product.warrantyDuration} tháng
+//                                                             </td>
+//                                                         </tr>
+//                                                         {product.properties.map(
+//                                                             (_property, _idx) => (
+//                                                                 <tr
+//                                                                     className="odd:bg-gray-100"
+//                                                                     key={_idx}
+//                                                                 >
+//                                                                     <td className="w-px whitespace-nowrap px-4 border-r">
+//                                                                         {_property.key}
+//                                                                     </td>
+//                                                                     <td className="px-4">
+//                                                                         {_property.value}
+//                                                                     </td>
+//                                                                 </tr>
+//                                                             )
+//                                                         )}
+//                                                     </tbody>
+//                                                 </table>
+//                                             </div>
+//                                         </div>
+//                                         <div className="border border-gray-400 border-dotted py-8 px-4 rounded-lg">
+//                                             <div>
+//                                                 <span className="text-red-700 text-3xl font-bold">
+//                                                     {formatVndCurrency(
+//                                                         product.sale || product.price
+//                                                     )}
+//                                                 </span>
+//                                                 {product.sale && (
+//                                                     <>
+//                                                         <span className="text-gray-800 line-through mx-2">
+//                                                             {formatVndCurrency(product.price)}
+//                                                         </span>
+//                                                         <span>
+//                                                             Tiết kiệm{" "}
+//                                                             {formatVndCurrency(
+//                                                                 product.price - product.sale
+//                                                             )}
+//                                                         </span>
+//                                                     </>
+//                                                 )}
+//                                             </div>
+//                                             <div>
+//                                                 <button className="bg-gray-200 font-semibold p-2 mt-8 mr-2">
+//                                                     Giá đã có VAT
+//                                                 </button>
+//                                                 <button className="bg-gray-200 font-semibold p-2 mt-8 ml-2">
+//                                                     Bảo hành {product.warrantyDuration} tháng
+//                                                 </button>
+//                                             </div>
+//                                         </div>
+//                                         <button
+//                                             className="bg-red-600 rounded-lg mt-4 w-full p-4 text-white"
+//                                             onClick={addProductToCart}
+//                                         >
+//                                             <div className="font-bold text-xl">ĐẶT MUA NGAY</div>
+//                                             <div>Giao hàng tận nơi nhanh chóng</div>
+//                                         </button>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                             <div>
+//                                 <div className="border border-gray-200 rounded-xl mb-4 overflow-hidden">
+//                                     <div className="border-b border-gray-200 p-3 font-semibold bg-gray-200">
+//                                         YÊN TÂM MUA HÀNG
+//                                     </div>
+//                                     <div className="p-3">
+//                                         <ul>
+//                                             <li>- Uy tín 20 năm xây dựng và phát triển</li>
+//                                             <li>- Sản phẩm chính hãng 100%</li>
+//                                             <li>- Trả góp lãi suất 0% toàn bộ giỏ hàng</li>
+//                                             <li>- Trả bảo hành tận nơi sử dụng</li>
+//                                             <li>- Bảo hành tận nơi cho doanh nghiệp</li>
+//                                             <li>- Ưu đãi riêng cho học sinh sinh viên</li>
+//                                             <li>- Vệ sinh miễn phí trọn đời PC, Laptop</li>
+//                                         </ul>
+//                                     </div>
+//                                 </div>
+//                                 <div className="border border-gray-200 rounded-xl mt-4 overflow-hidden">
+//                                     <div className="border-b border-gray-200 p-3 font-semibold bg-gray-200">
+//                                         MIỄN PHÍ MUA HÀNG
+//                                     </div>
+//                                     <div className="p-3">
+//                                         <ul>
+//                                             <li>- Giao hàng siêu tốc trong 2h</li>
+//                                             <li>- Giao hàng miễn phí toàn quốc</li>
+//                                             <li>- Nhận hàng và thanh toán tại nhà (ship COD)</li>
+//                                         </ul>
+//                                     </div>
+//                                 </div>
+//                             </div>
+// >>>>>>> main
                         </div>
                       ))}
                     </div>

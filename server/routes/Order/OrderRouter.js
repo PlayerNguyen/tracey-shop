@@ -19,6 +19,7 @@ router.get(`/my-order`, AuthMiddleware.forciblyRequireAuth, OrderController.getU
  */
 router.post(`/`, AuthMiddleware.optionalAuth, OrderController.createOrder);
 
+router.put(`/:id`, AuthMiddleware.forciblyRequireAuth, OrderController.updateOrder);
 router.delete(`/:id`, AuthMiddleware.forciblyRequireAuth, OrderController.deleteOrder);
 
 module.exports = router;

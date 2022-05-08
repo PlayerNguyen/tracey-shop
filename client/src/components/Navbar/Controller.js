@@ -36,7 +36,7 @@ const Controller = () => {
     dispatch(authActions.logout());
   };
 
-  const handleOpenProfile = () => {
+const handleOpenProfile = () => {
     dispatch(authActions.setProfileModal(true));
   };
 
