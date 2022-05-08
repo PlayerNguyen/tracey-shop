@@ -37,39 +37,40 @@ import { useDispatch } from "react-redux";
 import { checkTokenValid } from "./helpers/Common";
 import * as authActions from "./stores/authReducer";
 import Build from "./routes/Build";
+import Search from './routes/Search/Search';
 
 library.add(
-    faUser,
-    faSpinner,
-    faList,
-    faBoxOpen,
-    faPlus,
-    faChevronDown,
-    faIndustry,
-    faStar,
-    faStarRegular,
-    faCheck,
-    faPhone,
-    faTrash,
-    faCartShopping
+  faUser,
+  faSpinner,
+  faList,
+  faBoxOpen,
+  faPlus,
+  faChevronDown,
+  faIndustry,
+  faStar,
+  faStarRegular,
+  faCheck,
+  faPhone,
+  faTrash,
+  faCartShopping,
 );
 
 function App() {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const fetchProfile = async () => {
-        const tokenValid = checkTokenValid();
-        dispatch(authActions.setAuthenticated(tokenValid));
-        if (tokenValid) {
-            dispatch(authActions.getProfile());
-        }
-    };
+  const fetchProfile = async () => {
+    const tokenValid = checkTokenValid();
+    dispatch(authActions.setAuthenticated(tokenValid));
+    if (tokenValid) {
+      dispatch(authActions.getProfile());
+    }
+  };
 
-    React.useEffect(() => {
-        fetchProfile();
-    }, []);
+  React.useEffect(() => {
+    fetchProfile();
+  }, []);
 
-    return (
+ return (
         <div className="app">
             <Routes>
                 <Route path="/" element={<UserLayout />}>
@@ -79,6 +80,7 @@ function App() {
                     <Route path="/xay-dung-cau-hinh" element={<Build />} />
                     <Route path="/san-pham/:product" element={<ProductDetail />} />
                     <Route path="/:category" element={<Product />} />
+                    <Route path="/tim-kiem/:query" element={<Search />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
