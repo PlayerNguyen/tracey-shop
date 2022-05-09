@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { formatVndCurrency, getImageUrl } from "../../helpers/Common";
-import * as cartActions from "../../stores/cartReducer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { formatVndCurrency, getImageUrl } from '../../helpers/Common';
+import * as cartActions from '../../stores/cartReducer';
 
 export default function ProductItem({ product }) {
     const dispatch = useDispatch();
@@ -13,19 +13,36 @@ export default function ProductItem({ product }) {
     };
 
     const productStockStatus = product.stock ? (
-        <div>
-            <div>
-                <span className="font-semibold text-green-500">
-                    <FontAwesomeIcon icon="check" /> Có hàng
-                </span>
+        <div className='w-full'>
+            <div className="hidden md:block">
+                <div>
+                    <span className="font-semibold text-green-500">
+                        <FontAwesomeIcon icon="check" /> Có hàng
+                    </span>
+                </div>
+                <div>
+                    <span
+                        className="font-semibold hover:underline cursor-pointer"
+                        onClick={addProductToCart}
+                    >
+                        <FontAwesomeIcon icon="cart-shopping" />
+                    </span>
+                </div>
             </div>
-            <div>
-                <span
-                    className="font-semibold hover:underline cursor-pointer"
-                    onClick={addProductToCart}
-                >
-                    <FontAwesomeIcon icon="cart-shopping" />
-                </span>
+            <div className="flex md:hidden">
+                <div className='flex-grow'>
+                    <span className="font-semibold text-green-500">
+                        <FontAwesomeIcon icon="check" /> Có hàng
+                    </span>
+                </div>
+                <div>
+                    <span
+                        className="font-semibold hover:underline cursor-pointer"
+                        onClick={addProductToCart}
+                    >
+                        <FontAwesomeIcon icon="cart-shopping" />
+                    </span>
+                </div>
             </div>
         </div>
     ) : (
@@ -42,7 +59,7 @@ export default function ProductItem({ product }) {
                         <img
                             src={getImageUrl(product.thumbnail.fileName)}
                             alt={product.name}
-                            className="max-w-full"
+                            className="max-w-full m-auto"
                         />
                     </div>
                 </Link>
@@ -51,25 +68,31 @@ export default function ProductItem({ product }) {
                     <div className="p-3">
                         <Link to={`/san-pham/${product.slug}-${product._id}`}>
                             <div>
-                                <span className="font-bold text-lg">{product.name}</span>
+                                <span className="font-bold text-lg line-clamp-2">
+                                    {product.name}
+                                </span>
                             </div>
                         </Link>
                         {product.sale ? (
                             <>
-                                <div className="flex">
+                                <div className="md:flex sm:block">
                                     <div className="flex-grow flex items-end">
                                         {productStockStatus}
                                     </div>
                                     <div className="text-right">
                                         <div>
-                                            <span className="font-bold text-xl text-red-500">
-                                                {formatVndCurrency(product.sale)}
+                                            <span className="font-bold text-lg lg:text-xl text-red-500">
+                                                {formatVndCurrency(
+                                                    product.sale,
+                                                )}
                                             </span>
                                         </div>
                                         <div>
                                             <div>
                                                 <span className="line-through text-gray-500">
-                                                    {formatVndCurrency(product.price)}
+                                                    {formatVndCurrency(
+                                                        product.price,
+                                                    )}
                                                 </span>
                                             </div>
                                         </div>
