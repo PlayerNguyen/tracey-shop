@@ -27,7 +27,7 @@ export default function Navbar() {
                         md:bg-white md:p-4 drop-shadow-xl flex flex-col
                         md:flex-row gap-4 md:align-baseline md:items-center mt-3 md:mt-0 p-5"
     >
-      <div className="hidden md:block">
+      <div>
         <Link to="/">
           <h1 className="text-blue-500 text-2xl uppercase font-bold">
             BRAND.com

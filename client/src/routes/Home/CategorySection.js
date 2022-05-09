@@ -27,7 +27,7 @@ function CategorySection({ category }) {
                         {category.name}
                     </h3>
                 </Link>
-                <div className="grid grid-cols-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
                     {products.map((_product) => (
                         <ProductItem product={_product} key={_product._id} />
                     ))}

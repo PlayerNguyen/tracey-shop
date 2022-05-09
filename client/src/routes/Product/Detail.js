@@ -104,7 +104,7 @@ function ProductDetail(props) {
     const fetchSuggestProduct = async (_product) => {
         try {
             const resp = await productApi.getProductByCategory(
-                _product.category.slug,
+                _product.category?.slug,
             );
             setSuggestProducts(
                 resp.data
@@ -157,9 +157,9 @@ function ProductDetail(props) {
                         /{' '}
                         <Link
                             className="font-semibold"
-                            to={`/${product.category.slug}`}
+                            to={`/${product.category?.slug}`}
                         >
-                            {product.category.name}
+                            {product.category?.name}
                         </Link>{' '}
                         / <span className="font-semibold">{product.name}</span>
                     </div>
@@ -167,7 +167,7 @@ function ProductDetail(props) {
                         <div className="text-3xl font-semibold border-b pb-4">
                             {product.name}
                         </div>
-                        <div className="grid lg:grid-rows-5 md:grid-cols-5 gap-8 pt-4">
+                        <div className="grid md:grid-cols-5 gap-8 pt-4">
                             <div className="col-span-4">
                                 <div className="grid grid-cols-11 gap-8">
                                     <div className="col-span-4 p-8">
@@ -454,10 +454,12 @@ function ProductDetail(props) {
                                                                 Hãng sản xuất
                                                             </td>
                                                             <td className="px-4">
-                                                                {product.manufacturer &&
+
+                                                                {
                                                                     product
                                                                         .manufacturer
-                                                                        .name}
+                                                                        ?.name
+                                                                }
                                                             </td>
                                                         </tr>
                                                         <tr className="odd:bg-gray-100">
