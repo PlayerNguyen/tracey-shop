@@ -454,6 +454,7 @@ function ProductDetail(props) {
                                                                 Hãng sản xuất
                                                             </td>
                                                             <td className="px-4">
+
                                                                 {
                                                                     product
                                                                         .manufacturer
