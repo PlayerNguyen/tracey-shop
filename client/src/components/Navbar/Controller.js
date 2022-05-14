@@ -15,13 +15,13 @@ const Controller = () => {
     {
       name: 'Xây dựng máy tính',
       icon: <Grid size={20} />,
-      link: '/build',
+      link: '/xay-dung-cau-hinh',
       isAuthenticated: 'both',
     },
     {
       name: 'Giỏ hàng',
       icon: <ShoppingCart size={20} />,
-      link: '/cart',
+      link: '/gio-hang',
       isAuthenticated: 'both',
     },
     {
