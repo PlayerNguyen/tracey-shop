@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { AlertTriangle } from "react-feather";
-import { Link } from "react-router-dom";
-import { Navbar } from "../../components";
-import { Validator } from "../../helpers/Validator";
-import UserRequest from "../../requests/UserRequest";
+import React, { useEffect, useState } from 'react';
+import { AlertTriangle } from 'react-feather';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Navbar } from '../../components';
+import { Validator } from '../../helpers/Validator';
+import UserRequest from '../../requests/UserRequest';
 
 const Signup = () => {
-    const [phone, setPhone] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [isValidForm, setIsValidForm] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault(true);
@@ -20,11 +22,10 @@ const Signup = () => {
         /**
          * Sign up execute
          */
-        console.log(phone, password, confirmPassword);
         // Check phone number
         if (!Validator.isValidatePhone(phone)) {
             setError({
-                message: "Số điện thoại không hợp lệ",
+                message: 'Số điện thoại không hợp lệ',
             });
             return;
         }
@@ -32,7 +33,7 @@ const Signup = () => {
         // Check password and confirm
         if (password !== confirmPassword) {
             setError({
-                message: "Mật khẩu và mật khẩu nhập lại không khớp",
+                message: 'Mật khẩu và mật khẩu nhập lại không khớp',
             });
             return;
         }
@@ -40,7 +41,8 @@ const Signup = () => {
         // Sign up
         UserRequest.createSignUpRequest(phone, name, password, email)
             .then((res) => {
-                console.log(res);
+                toast.success('Đăng ký thành công');
+                navigate('/login');
             })
             .catch((err) => {
                 setError(err);
@@ -48,7 +50,12 @@ const Signup = () => {
     };
 
     useEffect(() => {
-        setIsValidForm(phone && password && confirmPassword && password === confirmPassword);
+        setIsValidForm(
+            phone &&
+                password &&
+                confirmPassword &&
+                password === confirmPassword,
+        );
     }, [phone, password, confirmPassword]);
 
     return (
@@ -111,7 +118,10 @@ const Signup = () => {
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="confirmPassword" className="text-gray-700">
+                            <label
+                                htmlFor="confirmPassword"
+                                className="text-gray-700"
+                            >
                                 Xác nhận mật khẩu
                             </label>
                             <input
@@ -119,7 +129,9 @@ const Signup = () => {
                                 className="border border-gray-400 p-2 w-full outline-none rounded"
                                 id="confirmPassword"
                                 value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
                             />
                         </div>
 
@@ -134,7 +146,11 @@ const Signup = () => {
 
                         <button
                             className={`p-2 text-center rounded text-base mb-4 ease-in-out duration-200
-              ${isValidForm ? "bg-blue-400 hover:bg-blue-600 hover:text-white" : "bg-blue-200"}`}
+              ${
+                  isValidForm
+                      ? 'bg-blue-400 hover:bg-blue-600 hover:text-white'
+                      : 'bg-blue-200'
+              }`}
                             disabled={!isValidForm}
                         >
                             Đăng ký

@@ -8,7 +8,10 @@ import { ProfileModal } from '../';
 const Controller = () => {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const {
+    isAuthenticated,
+    profile: { info },
+  } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [actionItems] = useState([
@@ -36,7 +39,7 @@ const Controller = () => {
     dispatch(authActions.logout());
   };
 
-const handleOpenProfile = () => {
+  const handleOpenProfile = () => {
     dispatch(authActions.setProfileModal(true));
   };
 
@@ -111,14 +114,16 @@ const handleOpenProfile = () => {
                   Đơn hàng
                 </div>
               </Link>
-              <Link to="/dashboard">
-                <div
-                  className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-                  role="menuitem"
-                >
-                  Quản lý
-                </div>
-              </Link>
+              {info.admin && (
+                <Link to="/dashboard">
+                  <div
+                    className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+                    role="menuitem"
+                  >
+                    Quản lý
+                  </div>
+                </Link>
+              )}
               <div
                 className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
                 role="menuitem"
