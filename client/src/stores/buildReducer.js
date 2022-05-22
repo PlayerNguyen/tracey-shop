@@ -1,92 +1,85 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
-import orderApi from '../requests/OrderRequest';
+
+const DEFAULT_CATEGORIES = [
+  {
+    category: 'Vi xử lý',
+    slug: 'vi-xu-ly',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'Bo mạch chủ',
+    slug: 'bo-mach-chu',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'RAM',
+    slug: 'ram',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'HDD',
+    slug: 'hdd',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'SSD',
+    slug: 'ssd',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'VGA',
+    slug: 'vga',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'Nguồn',
+    slug: 'nguon',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'Vỏ case',
+    slug: 'vo-case',
+    product: null,
+    quantity: 0,
+  },
+  {
+    category: 'Màn hình',
+    slug: 'man-hinh',
+    product: null,
+    quantity: 0,
+  },
+];
 
 const initialState = {
-  cart: [],
-  name: '',
-  address: '',
-  phone: '',
+  categories: DEFAULT_CATEGORIES,
+  products: [],
+  openSelectProduct: false,
 };
 
-const cart = createSlice({
-  name: 'cart',
+const build = createSlice({
+  name: 'build',
   initialState: initialState,
   reducers: {
-    addProductToCart: (state, action) => {
-      const existProduct = state.cart.find(
-        (_product) => _product._id === action.payload._id,
-      );
-      if (existProduct) {
-        existProduct.quantity += 1;
-      } else {
-        state.cart.push({
-          _id: action.payload._id,
-          data: action.payload,
-          quantity: 1,
-        });
-      }
-      toast.success('Thêm sản phẩm vào giỏ hàng thành công');
+    setProducts: (state, action) => {
+      state.products = action.payload;
     },
-    removeProductFromCart: (state, action) => {
-      state.cart = state.cart.filter(
-        (_product) => _product._id !== action.payload,
-      );
-      toast.success('Xóa sản phẩm khỏi giỏ hàng thành công');
+    setOpenSelectProduct: (state, action) => {
+      state.openSelectProduct = action.payload;
     },
-    changeProductQuantity: (state, action) => {
-      const product = state.cart.find(
-        (_product) => _product._id === action.payload._id,
-      );
-      product.quantity = action.payload.quantity;
-    },
-    setProperty: (state, action) => {
-      state[action.payload.name] = action.payload.value;
-    },
-    setName: (state, action) => {
-      state.name = action.payload;
-    },
-    setPhone: (state, action) => {
-      state.phone = action.payload;
-    },
-    setAddress: (state, action) => {
-      state.address = action.payload;
-    },
-    clearCart: (state) => {
-      state.cart = [];
+    setCategories: (state, action) => {
+      state.categories = action.payload;
     },
   },
 });
 
-export const {
-  addProductToCart,
-  removeProductFromCart,
-  changeProductQuantity,
-  setProperty,
-  clearCart,
-  setName,
-  setPhone,
-  setAddress,
-} = cart.actions;
+export const { setProducts, setOpenSelectProduct, setCategories } =
+  build.actions;
 
-const createOrder = (data) => {
-  return async (dispatch) => {
-    try {
-      await orderApi.createOrder(data);
-      dispatch(clearCart());
-      toast.success(
-        'Đặt hàng thành công. Nhân viên chúng tôi sẽ sớm liên hệ với bạn để xác nhận đơn hàng. Xin chân thành cảm ơn',
-      );
-    } catch (e) {
-      toast.error(
-        e.response?.data?.error?.message ||
-          'Đặt hàng thất bại, vui lòng thử lại sau.',
-      );
-      console.error(e);
-    }
-  };
-};
-
-export { createOrder };
-
-export default cart.reducer;
+export default build.reducer;
