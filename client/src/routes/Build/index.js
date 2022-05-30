@@ -56,6 +56,10 @@ function Build() {
     dispatch(buildActions.setCategories(newCategories));
   };
 
+  const handleMoveItemsToCart = () => {
+    
+  };
+
   return (
     <>
       <div className="bg-white p-4">
@@ -158,8 +162,16 @@ function Build() {
             })}
             <tr>
               <td className="border border-gray-200 p-8">Tổng tiền:</td>
-              <td className="border border-gray-200 text-right text-red-500 font-bold p-4">
-                {formatVndCurrency(totalPrice)}
+              <td className="border border-gray-200 text-right p-4">
+                <span className="text-red-500 font-bold">
+                  {formatVndCurrency(totalPrice)}
+                </span>
+                <button
+                  className="ml-2 bg-blue-500 text-white p-2 rounded-lg font-semibold"
+                  onClick={handleMoveItemsToCart}
+                >
+                  Tới giỏ hàng
+                </button>
               </td>
             </tr>
           </tbody>
