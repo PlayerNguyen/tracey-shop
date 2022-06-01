@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import * as cartActions from './cartReducer';
 
 const DEFAULT_CATEGORIES = [
   {
@@ -81,5 +82,19 @@ const build = createSlice({
 
 export const { setProducts, setOpenSelectProduct, setCategories } =
   build.actions;
+
+function moveItemsToCart() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const categories = state.build.categories;
+    const products = categories
+      .filter((_category) => _category.product)
+      .map((_category) => _category.product);
+    dispatch(cartActions.addProductsToCart(products));
+    dispatch(setCategories(initialState.categories));
+  };
+}
+
+export { moveItemsToCart };
 
 export default build.reducer;

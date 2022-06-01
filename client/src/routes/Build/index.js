@@ -5,6 +5,7 @@ import productApi from '../../requests/ProductRequest';
 import SelectProductModal from './select-product-modal';
 import { useSelector, useDispatch } from 'react-redux';
 import * as buildActions from '../../stores/buildReducer';
+import { useNavigate } from 'react-router-dom';
 
 function Build() {
   const { categories, products, openSelectProduct } = useSelector(
@@ -19,6 +20,7 @@ function Build() {
     return total;
   }, [categories]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getProductByCategorySlug = async (slug) => {
     try {
@@ -57,7 +59,8 @@ function Build() {
   };
 
   const handleMoveItemsToCart = () => {
-    
+    dispatch(buildActions.moveItemsToCart());
+    navigate('/gio-hang');
   };
 
   return (
