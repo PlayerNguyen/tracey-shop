@@ -30,6 +30,7 @@ import {
     faPhone,
     faTrash,
     faCartShopping,
+    faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { AdminLayout, UserLayout } from "./components";
@@ -53,6 +54,7 @@ library.add(
   faPhone,
   faTrash,
   faCartShopping,
+  faPenToSquare
 );
 
 function App() {

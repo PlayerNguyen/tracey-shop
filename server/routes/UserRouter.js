@@ -23,7 +23,7 @@ router.get("/", async (req, res, next) => {
  * @param {*} password a string password
  */
 router.post(
-    `/register/`,
+    `/register`,
     PreconditionMiddleware.checkParameterBody(`phone`),
     PreconditionMiddleware.checkParameterBody(`password`),
     PreconditionMiddleware.checkParameterBody(`name`),
