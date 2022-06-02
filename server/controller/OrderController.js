@@ -26,8 +26,8 @@ async function getOrders(req, res, next) {
 
 async function getUserOrder(req, res, next) {
   try {
-    // Not signed in or not an admin user
-    if (!req.userData || !req.userData.admin) {
+    // Not signed in
+    if (!req.userData) {
       return next(new MiddlewareError(401, Language.Response.Unauthorized));
     }
     const { _id } = req.userData;
