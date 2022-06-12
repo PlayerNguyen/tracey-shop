@@ -42,7 +42,7 @@ const Signup = () => {
     UserRequest.createSignUpRequest(phone, name, password, email)
       .then((res) => {
         toast.success('Đăng ký thành công');
-        navigate('/login');
+        navigate('/dang-nhap');
       })
       .catch((err) => {
         setError(err);
@@ -152,7 +152,7 @@ const Signup = () => {
 
             <Link
               className="p-2 text-center bg-green-400 rounded text-base mb-4"
-              to="/login"
+              to="/dang-nhap"
             >
               Đăng nhập
             </Link>

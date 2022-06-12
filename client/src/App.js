@@ -84,17 +84,17 @@ function App() {
                     <Route path="/:category" element={<Product />} />
                     <Route path="/tim-kiem/:query" element={<Search />} />
                 </Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
+                <Route path="/dang-nhap" element={<Login />} />
+                <Route path="/dang-ky" element={<Signup />} />
                 <Route path="/dev" element={<Dev />} />
                 <Route path="/dashboard" element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
-                    <Route path="user" element={<AdminUser />} />
-                    <Route path="category" element={<AdminCategory />} />
-                    <Route path="manufacturer" element={<AdminManufacturer />} />
-                    <Route path="product" element={<AdminProduct />} />
-                    <Route path="order" element={<AdminOrder />} />
-                    <Route path="import" element={<AdminImport />} />
+                    <Route path="nguoi-dung" element={<AdminUser />} />
+                    <Route path="danh-muc" element={<AdminCategory />} />
+                    <Route path="nha-san-xuat" element={<AdminManufacturer />} />
+                    <Route path="san-pham" element={<AdminProduct />} />
+                    <Route path="don-dat-hang" element={<AdminOrder />} />
+                    <Route path="don-nhap-hang" element={<AdminImport />} />
                 </Route>
             </Routes>
         </div>

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { checkTokenValid, classNames } from '../../helpers/Common';
 import { useSelector } from 'react-redux';
+import jwt_decode from 'jwt-decode';
 
 function MenuItem({ item, onClick, activeMenu }) {
   return (
@@ -39,8 +40,17 @@ function AdminLayout() {
         navigate('/');
       }
     }
-    if (!info.admin) {
-      navigate('/');
+    if (info._id) {
+      if (!info.admin) {
+        navigate('/');
+      }
+    } else {
+      const token = localStorage.getItem('token');
+      const userInfo = jwt_decode(token);
+      console.log(userInfo)
+      if (!userInfo.admin) {
+        navigate('/');
+      }
     }
   }, []);
 
@@ -53,32 +63,32 @@ function AdminLayout() {
   const menu = [
     {
       name: 'Tài khoản',
-      path: '/dashboard/user',
+      path: '/dashboard/nguoi-dung',
       icon: 'user',
     },
     {
       name: 'Danh mục hàng',
-      path: '/dashboard/category',
+      path: '/dashboard/danh-muc',
       icon: 'list',
     },
     {
       name: 'Nhà sản xuất',
-      path: '/dashboard/manufacturer',
+      path: '/dashboard/nha-san-xuat',
       icon: 'industry',
     },
     {
       name: 'Sản phẩm',
-      path: '/dashboard/product',
+      path: '/dashboard/san-pham',
       icon: 'box-open',
     },
     {
       name: 'Hóa đơn bán hàng',
-      path: '/dashboard/order',
+      path: '/dashboard/don-dat-hang',
       icon: 'box-open',
     },
     {
       name: 'Nhập hàng',
-      path: '/dashboard/import',
+      path: '/dashboard/don-nhap-hang',
       icon: 'box-open',
     },
   ];

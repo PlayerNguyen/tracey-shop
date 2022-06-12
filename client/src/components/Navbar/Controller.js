@@ -30,7 +30,7 @@ const Controller = () => {
     {
       name: 'Đăng nhập',
       icon: <User size={20} />,
-      link: '/login',
+      link: '/dang-nhap',
       isAuthenticated: 'false',
     },
   ]);
@@ -136,7 +136,7 @@ const Controller = () => {
         </div>
       ) : (
         <Link
-          to="/login"
+          to="/dang-nhap"
           className="flex flex-col align-middle items-center p-2"
         >
           <User />

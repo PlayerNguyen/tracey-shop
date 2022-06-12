@@ -86,7 +86,7 @@ const Login = () => {
 
                         <Link
                             className="p-2 text-center bg-green-400 rounded text-base mb-4"
-                            to="/signup"
+                            to="/dang-ky"
                         >
                             Đăng ký
                         </Link>
