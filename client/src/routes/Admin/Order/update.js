@@ -136,11 +136,13 @@ function ProductRow({ data, index }) {
   const searchProduct = (e) => {
     const { value } = e.target;
     if (value) {
-      ProductRequest.search(value).then((res) => {
+      ProductRequest.searchProduct(value).then((res) => {
         setProductsFound(res.data);
       });
     }
   };
+
+  const handleSelectProduct = (product) => {};
 
   return (
     <>
@@ -152,13 +154,41 @@ function ProductRow({ data, index }) {
             alt={productDetail.product.name}
           />
         </td>
-        <td className="border border-slate-300 px-2">
+        <td className="border border-slate-300 px-2 relative">
           <input
-            className="input w-full"
+            className="input w-full peer"
             readOnly={Boolean(data)}
-            value={productDetail.product.name}
+            defaultValue={productDetail.product.name}
             onChange={_.debounce(searchProduct, 1000)}
           />
+          {productsFound.length > 0 && (
+            <div
+              className={classNames(
+                'p-2 block peer-focus:block absolute top-full max-h-[400px]',
+                'border-gray-500 rounded-lg bg-white overflow-auto',
+              )}
+            >
+              {productsFound.map((_product) => (
+                <div
+                  key={_product.id}
+                  className={classNames(
+                    'flex items-center p-2 hover:bg-gray-200 rounded-lg',
+                    'cursor-pointer',
+                  )}
+                  onClick={() => handleSelectProduct(_product)}
+                >
+                  <div className="mr-4">
+                    <img
+                      className="w-[100px] h-[100px]"
+                      src={getImageUrl(_product.thumbnail.fileName)}
+                      alt="product-img"
+                    />
+                  </div>
+                  <div>{_product.name}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </td>
         <td className="border border-slate-300 text-center px-2">
           <input
