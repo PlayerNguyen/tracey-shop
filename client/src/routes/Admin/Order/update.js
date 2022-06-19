@@ -5,6 +5,8 @@ import {
   formatVndCurrency,
   getImageUrl,
 } from '../../../helpers/Common';
+import ProductRequest from '../../../requests/ProductRequest';
+import _ from 'lodash';
 
 function UpdateOrderDetail({ open, onClose, updateOrder }) {
   const [orderDetail, setOrderDetail] = React.useState({
@@ -21,6 +23,13 @@ function UpdateOrderDetail({ open, onClose, updateOrder }) {
       setOrderDetail({ ...orderDetail, ...updateOrder });
     }
   }, [updateOrder]);
+
+  const addProduct = () => {
+    setOrderDetail({
+      ...orderDetail,
+      products: [...orderDetail.products, null],
+    });
+  };
 
   const readOnly = Boolean(updateOrder);
 
@@ -62,7 +71,12 @@ function UpdateOrderDetail({ open, onClose, updateOrder }) {
                 </div>
               </div>
             </div>
-            <button className='mt-4 font-semibold hover:underline hover:text-blue-500'>Thêm sản phẩm</button>
+            <button
+              className="mt-4 font-semibold hover:underline hover:text-blue-500"
+              onClick={addProduct}
+            >
+              Thêm sản phẩm
+            </button>
             <table className="w-full border-collapse mt-4">
               <thead>
                 <tr>
@@ -82,29 +96,11 @@ function UpdateOrderDetail({ open, onClose, updateOrder }) {
               </thead>
               <tbody>
                 {orderDetail.products.map((_data, _idx) => (
-                  <tr key={_data.product._id}>
-                    <td className="border border-slate-300 text-center">
-                      {_idx + 1}
-                    </td>
-                    <td className="border border-slate-300 w-64">
-                      <img
-                        src={getImageUrl(_data.product.thumbnail.fileName)}
-                        alt={_data.product.name}
-                      />
-                    </td>
-                    <td className="border border-slate-300">
-                      {_data.product.name}
-                    </td>
-                    <td className="border border-slate-300 text-center">
-                      {_data.quantity}
-                    </td>
-                    <td className="border border-slate-300 text-center">
-                      {formatVndCurrency(_data.price)}
-                    </td>
-                    <td className="border border-slate-300 text-center font-semibold text-red-500">
-                      {formatVndCurrency(_data.quantity * _data.price)}
-                    </td>
-                  </tr>
+                  <ProductRow
+                    key={_data?.product?.id || _idx}
+                    data={_data}
+                    index={_idx}
+                  />
                 ))}
                 <tr>
                   <td colSpan={5} className="text-right font-semibold">
@@ -119,6 +115,97 @@ function UpdateOrderDetail({ open, onClose, updateOrder }) {
           </div>
         </Modal>
       )}
+    </>
+  );
+}
+
+function ProductRow({ data, index }) {
+  const [productDetail, setProduct] = React.useState(
+    data || {
+      product: {
+        thumbnail: {},
+        name: '',
+      },
+      quantity: 1,
+      price: 0,
+      sale: 0,
+    },
+  );
+  const [productsFound, setProductsFound] = React.useState([]);
+
+  const searchProduct = (e) => {
+    const { value } = e.target;
+    if (value) {
+      ProductRequest.searchProduct(value).then((res) => {
+        setProductsFound(res.data);
+      });
+    }
+  };
+
+  const handleSelectProduct = (product) => {
+    
+  };
+
+  return (
+    <>
+      <tr>
+        <td className="border border-slate-300 text-center">{index + 1}</td>
+        <td className="border border-slate-300 w-64">
+          <img
+            src={getImageUrl(productDetail.product.thumbnail.fileName)}
+            alt={productDetail.product.name}
+          />
+        </td>
+        <td className="border border-slate-300 px-2 relative">
+          <input
+            className="input w-full peer"
+            readOnly={Boolean(data)}
+            defaultValue={productDetail.product.name}
+            onChange={_.debounce(searchProduct, 1000)}
+          />
+          {productsFound.length > 0 && (
+            <div
+              className={classNames(
+                'p-2 block peer-focus:block absolute top-full max-h-[400px]',
+                'border-gray-500 rounded-lg bg-white overflow-auto',
+              )}
+            >
+              {productsFound.map((_product) => (
+                <div
+                  key={_product.id}
+                  className={classNames(
+                    'flex items-center p-2 hover:bg-gray-200 rounded-lg',
+                    'cursor-pointer',
+                  )}
+                  onClick={() => handleSelectProduct(_product)}
+                >
+                  <div className="mr-4">
+                    <img
+                      className="w-[100px] h-[100px]"
+                      src={getImageUrl(_product.thumbnail.fileName)}
+                      alt="product-img"
+                    />
+                  </div>
+                  <div>{_product.name}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </td>
+        <td className="border border-slate-300 text-center px-2">
+          <input
+            className="input"
+            readOnly={Boolean(data)}
+            value={productDetail.quantity}
+          />
+        </td>
+        <td className="border border-slate-300 text-center">
+          {formatVndCurrency(productDetail.price)}
+        </td>
+        <td className="border border-slate-300 text-center font-semibold text-red-500">
+          {formatVndCurrency(productDetail.quantity * productDetail.price)}
+        </td>
+      </tr>
     </>
   );
 }

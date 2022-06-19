@@ -11,24 +11,24 @@ function Banners() {
         <>
             <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2 overflow-hidden rounded-lg">
-                    <img src={Banner1} className="h-full" alt="banner" />
+                    <img src={Banner1} className="h-full aspect-video" alt="banner" />
                 </div>
                 <div className="grid grid-rows-2 gap-4">
                     <div className="overflow-hidden rounded-lg">
-                        <img src={Banner2} className="h-full" alt="banner" />
+                        <img src={Banner2} className="h-full aspect-video" alt="banner" />
                     </div>
                     <div className="overflow-hidden rounded-lg">
-                        <img src={Banner6} className="h-full" alt="banner" />
+                        <img src={Banner6} className="h-full aspect-video" alt="banner" />
                     </div>
                 </div>
                 <div className="overflow-hidden rounded-lg">
-                    <img src={Banner3} className="h-full" alt="banner" />
+                    <img src={Banner3} className="h-full aspect-video" alt="banner" />
                 </div>
                 <div className="overflow-hidden rounded-lg">
-                    <img src={Banner5} className="h-full" alt="banner" />
+                    <img src={Banner5} className="h-full aspect-video" alt="banner" />
                 </div>
                 <div className="overflow-hidden rounded-lg">
-                    <img src={Banner4} className="h-full" alt="banner" />
+                    <img src={Banner4} className="h-full aspect-video" alt="banner" />
                 </div>
             </div>
         </>

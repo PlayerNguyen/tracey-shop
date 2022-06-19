@@ -38,7 +38,7 @@ AxiosHelper.interceptors.response.use(
      */
     if (err.response.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      window.location.href = '/dang-nhap';
     }
     if (process.env.NODE_ENV !== 'production') {
       console.error(err.toJSON());

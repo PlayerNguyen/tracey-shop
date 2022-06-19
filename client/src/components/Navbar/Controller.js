@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, ShoppingCart, User } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from '../../stores/authReducer';
 import { ProfileModal } from '../';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Controller = () => {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -17,20 +17,20 @@ const Controller = () => {
   const [actionItems] = useState([
     {
       name: 'Xây dựng máy tính',
-      icon: <Grid size={20} />,
+      icon: <FontAwesomeIcon icon="desktop" />,
       link: '/xay-dung-cau-hinh',
       isAuthenticated: 'both',
     },
     {
       name: 'Giỏ hàng',
-      icon: <ShoppingCart size={20} />,
+      icon: <FontAwesomeIcon icon="cart-shopping" />,
       link: '/gio-hang',
       isAuthenticated: 'both',
     },
     {
       name: 'Đăng nhập',
-      icon: <User size={20} />,
-      link: '/login',
+      icon: <FontAwesomeIcon icon="user" />,
+      link: '/dang-nhap',
       isAuthenticated: 'false',
     },
   ]);
@@ -136,10 +136,10 @@ const Controller = () => {
         </div>
       ) : (
         <Link
-          to="/login"
+          to="/dang-nhap"
           className="flex flex-col align-middle items-center p-2"
         >
-          <User />
+          <FontAwesomeIcon icon="user" />
           <span>Đăng nhập</span>
         </Link>
       )}

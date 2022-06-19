@@ -1,8 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Search } from 'react-feather';
 import { Link, useNavigate } from 'react-router-dom';
 
 /**
@@ -220,7 +220,7 @@ const Searchbox = () => {
             handleSearch(query);
           }}
         >
-          <Search className="text-white" size={16} />
+          <FontAwesomeIcon icon="search" className="text-white" />
         </button>
       </div>
       <SearchBoxSuggestion

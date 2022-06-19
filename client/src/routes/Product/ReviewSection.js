@@ -27,7 +27,7 @@ function ReviewSection({ product }) {
     }, [user]);
 
     const handleRedirectLogin = () => {
-        navigate("/login");
+        navigate("/dang-nhap");
     };
 
     const handleUpdateRating = (rating) => {
