@@ -1,5 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { AlertTriangle } from 'react-feather';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Navbar } from '../../components';
@@ -130,7 +130,7 @@ const Signup = () => {
             {error && (
               <div className="mb-4 p-2 bg-red-300 text-red-900 rounded flex flex-row gap-3 align-baseline items-center">
                 <div className="basis-2 p-2">
-                  <AlertTriangle />
+                  <FontAwesomeIcon icon="triangle-exclamation" />
                 </div>
                 <div>
                   {(error && error.response?.data?.error) || error.message}

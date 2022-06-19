@@ -142,7 +142,9 @@ function ProductRow({ data, index }) {
     }
   };
 
-  const handleSelectProduct = (product) => {};
+  const handleSelectProduct = (product) => {
+    
+  };
 
   return (
     <>
