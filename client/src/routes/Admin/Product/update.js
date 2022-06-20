@@ -19,6 +19,8 @@ function UpdateProduct({ open, onClose, onSave, updateProduct, categories, manuf
         imageData: [],
         category: null,
         categoryOption: null,
+        manufacturer: null,
+        manufacturerOption: null,
         properties: [],
         warrantyDuration: 0,
     });
