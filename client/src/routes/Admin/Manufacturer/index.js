@@ -112,7 +112,7 @@ function Manufacturers() {
                                 <td className="text-center py-2">{_idx + 1}</td>
                                 <td className="py-2">
                                     <img
-                                        src={getImageUrl(_manufacturer.thumbnail.fileName)}
+                                        src={getImageUrl(_manufacturer.thumbnail?.fileName)}
                                         alt={_manufacturer.name}
                                     />
                                 </td>
