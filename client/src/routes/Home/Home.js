@@ -30,7 +30,7 @@ const Home = () => {
                     <Banners />
                 </div>
             </div>
-            {categories.map((_category) => (
+            {categories.slice(0,5).map((_category) => (
                 <CategorySection category={_category} key={_category._id} />
             ))}
         </>
