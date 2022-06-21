@@ -74,7 +74,6 @@ function ProductList(props) {
         return priceB - priceA;
       });
     }
-    console.log(_filteredProducts);
     setFilteredProducts(_filteredProducts);
   }, [filters, products, sortOption]);
 

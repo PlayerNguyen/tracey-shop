@@ -19,7 +19,7 @@ function Modal(props) {
                 <div
                     className={classNames(
                         dimmer && "bg-black/50",
-                        "fixed w-full h-screen top-0 left-0 flex items-center justify-center overflow-auto"
+                        "z-10 fixed w-full h-screen top-0 left-0 flex items-center justify-center overflow-auto"
                     )}
                     onClick={onClose}
                 >
