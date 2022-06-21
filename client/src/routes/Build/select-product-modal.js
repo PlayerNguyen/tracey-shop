@@ -7,7 +7,12 @@ function SelectProductModal({ open, onClose, products, onSelectProduct }) {
   return (
     <>
       <Modal open={open} onClose={onClose} dimmer>
-        <div className="w-1/2 bg-white border rounded-xl p-4">
+        <div className="w-1/2 max-h-[75%] overflow-auto bg-white border rounded-xl p-4">
+          {products.length > 0 && (
+            <span className="text-4xl font-semibold">
+              {products[0].category.name}
+            </span>
+          )}
           {products.map((_product) => (
             <div
               key={_product._id}
