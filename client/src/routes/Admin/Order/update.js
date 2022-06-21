@@ -7,6 +7,7 @@ import {
 } from '../../../helpers/Common';
 import ProductRequest from '../../../requests/ProductRequest';
 import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function UpdateOrderDetail({ open, onClose, updateOrder }) {
   const [orderDetail, setOrderDetail] = React.useState({
@@ -71,12 +72,14 @@ function UpdateOrderDetail({ open, onClose, updateOrder }) {
                 </div>
               </div>
             </div>
-            <button
-              className="mt-4 font-semibold hover:underline hover:text-blue-500"
-              onClick={addProduct}
-            >
-              Thêm sản phẩm
-            </button>
+            {!updateOrder && (
+              <button
+                className="mt-4 font-semibold hover:underline hover:text-blue-500"
+                onClick={addProduct}
+              >
+                Thêm sản phẩm
+              </button>
+            )}
             <table className="w-full border-collapse mt-4">
               <thead>
                 <tr>
@@ -92,6 +95,7 @@ function UpdateOrderDetail({ open, onClose, updateOrder }) {
                   <th className="text-white bg-gray-800 text-center">
                     Tổng tiền
                   </th>
+                  {!updateOrder && <th className="bg-gray-800"></th>}
                 </tr>
               </thead>
               <tbody>
@@ -142,9 +146,7 @@ function ProductRow({ data, index }) {
     }
   };
 
-  const handleSelectProduct = (product) => {
-    
-  };
+  const handleSelectProduct = (product) => {};
 
   return (
     <>
@@ -205,6 +207,11 @@ function ProductRow({ data, index }) {
         <td className="border border-slate-300 text-center font-semibold text-red-500">
           {formatVndCurrency(productDetail.quantity * productDetail.price)}
         </td>
+        {!data && (
+          <td className="border border-slate-300 text-center">
+            <FontAwesomeIcon icon="trash" className="text-red-500" />
+          </td>
+        )}
       </tr>
     </>
   );
